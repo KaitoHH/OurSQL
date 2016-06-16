@@ -33,18 +33,20 @@ void BufferMgr::addBlock(Block *b)
 	leastAddr[nextBlock] = leastList.begin();
 }
 
-void BufferMgr::removeBlock(int bno)
+void BufferMgr::removeBlock(uint bno)
 {
 	if (block[bno]->isModified()) {
 		// TODO:Ð´»ØÎÄ¼þ
 		printf("TODO:block #%d is written back to files.\n", bno);
+		block[bno]->writeToFiles();
+		//fwrite(block[bno]->getBlockAddr(), BLOCK_SIZE, 1, block[bno]->getFilePos());
 	}
 	delete block[bno];
 	block[bno] = nullptr;
 	freeList.push_back(bno);
 }
 
-Block * BufferMgr::getBlock(int BlockNum)
+Block * BufferMgr::getBlock(uint BlockNum)
 {
 	if (numMap.find(BlockNum) == numMap.end())
 		return nullptr;

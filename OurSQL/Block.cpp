@@ -1,9 +1,10 @@
 #include "Block.h"
 
 
-Block::Block(int _blockNum) :blockNum(_blockNum), modified(false)
+Block::Block(int _blockNum)
 {
-
+	head = new byte[BLOCK_SIZE];
+	*(int *)head = _blockNum;
 }
 
 Block::~Block()
@@ -12,10 +13,30 @@ Block::~Block()
 
 int Block::getBlockNum()
 {
-	return blockNum;
+	return *(int *)head;
 }
 
 bool Block::isModified()
 {
 	return modified;
+}
+
+const byte * Block::getBlockAddr()
+{
+	return (const byte*)head;
+}
+
+FILE * Block::getFilePos()
+{
+	return fp;
+}
+
+void Block::writeToFiles()
+{
+	fwrite(head, BLOCK_SIZE, 1, fp);
+}
+
+void Block::deleteBlock()
+{
+	*(head + 4) = 0;
 }

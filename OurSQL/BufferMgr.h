@@ -11,8 +11,8 @@ public:
 	BufferMgr();
 	~BufferMgr();
 	void addBlock(Block *);
-	void removeBlock(int);
-	Block* getBlock(int);
+	void removeBlock(uint);
+	Block* getBlock(uint);
 	int getAndReleaseLruBlock();
 
 	void showBlock();
@@ -24,7 +24,7 @@ private:
 	std::vector<int> freeList;
 
 	// 块号与BufferMgr内部序号的对应关系
-	std::map<int, int>numMap;
+	std::map<uint, int>numMap;
 
 	// LRU列表
 	std::list<int>leastList;
