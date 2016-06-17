@@ -10,9 +10,9 @@ typedef unsigned short int ushort;
 
 /*
 ** Block 的结构
-** ---------------------------------------------------------
-** |Next|Count|Free|Record1.Length|Record1.Pointer|Record2...
-** ----------------------------------------------------------
+** -----------------------------------------------------------------------------------------------------------
+** |Next|Count|Free|Record1.Length|Record1.Pointer|Record2...|..Free Space..|Record n|Record n-1|...|Record 1|
+** -----------------------------------------------------------------------------------------------------------
 ** 0    4     6    8              10              12
 ** 4字节大小的为uint, 2字节大小的为ushort
 ** 一般而言，外部的指针占4字节，块内部指针/内部大小占2字节
@@ -42,6 +42,7 @@ public:
 	void writeToFiles();
 	void deleteBlock();
 
+	void showBlock();
 private:
 	uint blockNum;
 	byte *head;

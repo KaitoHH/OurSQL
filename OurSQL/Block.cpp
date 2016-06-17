@@ -27,10 +27,17 @@ bool Block::canAddRecord(Record *r)
 bool Block::addRecord(Record *r)
 {
 	if (!canAddRecord(r))	return false;
+	// 更新head部分的length
 	setRecordLength(getRecordCount()) = r->getLength();
+	// 分配空闲空间
 	ushort pos = getFree() - r->getLength();
+	// 更新指针
+	setRecordPointer(getRecordCount()) = pos;
 	byte *p = head + pos;
+	// 拷贝数据
 	strncpy(p, r->getData(), r->getLength());
+	// 更新Free指针
+	setFree() -= r->getLength();
 	setRecordCount()++;
 	return true;
 }
@@ -43,13 +50,13 @@ byte * Block::getRecordData(ushort index)
 
 ushort Block::getRecordLength(ushort index)
 {
-	setRecordLength(index);
+	return setRecordLength(index);
 }
 
 bool Block::removeRecord(ushort index)
 {
 	if (index >= getRecordCount())	return false;
-	
+
 	int recordLength = getRecordLength(index);
 	// 删除最后一块不需要移动
 	if (index != getRecordCount() - 1) {
@@ -98,6 +105,19 @@ void Block::writeToFiles()
 void Block::deleteBlock()
 {
 	*(head + 4) = 0;
+}
+
+void Block::showBlock()
+{
+	printf("BlockNum: #%d, count: %d\n", blockNum, getRecordCount());
+	printf("%3s|%7s|%10s\n", "no", "length", "record");
+	for (int i = 0; i < getRecordCount(); i++) {
+		byte * s = new byte[getRecordLength(i) + 1];
+		strncpy(s, getRecordData(i), getRecordLength(i));
+		s[setRecordLength(i)] = 0;
+		printf("%3d|%7d|%10s\n", i, getRecordLength(i), s);
+		delete[] s;
+	}
 }
 
 ushort& Block::setFree()

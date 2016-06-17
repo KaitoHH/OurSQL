@@ -5,7 +5,7 @@ typedef unsigned short int ushort;
 class Record
 {
 public:
-	Record();
+	Record(const char *);
 	~Record();
 
 	ushort getLength();
@@ -14,6 +14,6 @@ public:
 	byte* getData();
 
 private:
-
+	byte* data;
 };
 

@@ -8,7 +8,10 @@ void(*_commandFunctionList[])(char*, void*)
 	exitCommand,
 	newBlock,
 	useBlock,
-	showBuffer
+	showBuffer,
+	showBlock,
+	addRecord,
+	removeRecord
 };
 
 char * _commandNameList[]
@@ -18,9 +21,12 @@ char * _commandNameList[]
 	"newblock",
 	"useblock",
 	"showbuffer",
+	"showblock",
+	"addrecord",
+	"removerecord"
 };
 
-int _commandList_length = 4;
+int _commandList_length = 7;
 
 
 void notFindException(char* cmd, void* par)
@@ -47,4 +53,28 @@ void useBlock(char*cmd, void *par)
 void showBuffer(char*cmd, void *par)
 {
 	buffer.showBlock();
+}
+
+void showBlock(char*cmd, void *par)
+{
+	int bno = atoi((char *)par);
+	buffer.getBlock(bno)->showBlock();
+}
+
+void addRecord(char*cmd, void *par)
+{
+	char *str = (char*)par;
+	int bno;
+	char record[100];
+	sscanf(str, "%d %s", &bno, record);
+	Record *rec = new Record(record);
+	buffer.getBlock(bno)->addRecord(rec);
+}
+
+void removeRecord(char*cmd, void *par)
+{
+	char *str = (char*)par;
+	int bno, rindex;
+	sscanf(str, "%d %d", &bno, &rindex);
+	buffer.getBlock(bno)->removeRecord(rindex);
 }
