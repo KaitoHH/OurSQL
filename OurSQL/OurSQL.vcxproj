@@ -23,6 +23,7 @@
     <ClCompile Include="BufferMgr.cpp" />
     <ClCompile Include="Cmd.cpp" />
     <ClCompile Include="CommandList.cpp" />
+    <ClCompile Include="File.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Record.cpp" />
   </ItemGroup>
@@ -31,6 +32,7 @@
     <ClInclude Include="BufferMgr.h" />
     <ClInclude Include="Cmd.h" />
     <ClInclude Include="CommandList.h" />
+    <ClInclude Include="File.h" />
     <ClInclude Include="Record.h" />
   </ItemGroup>
   <ItemGroup>

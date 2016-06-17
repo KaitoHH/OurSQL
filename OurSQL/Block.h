@@ -39,8 +39,7 @@ public:
 
 	bool isModified();
 	FILE* getFilePos();
-	void writeToFiles();
-	void deleteBlock();
+	void writeToFile();
 
 	void showBlock();
 private:

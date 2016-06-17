@@ -69,6 +69,7 @@ void addRecord(char*cmd, void *par)
 	sscanf(str, "%d %s", &bno, record);
 	Record *rec = new Record(record);
 	buffer.getBlock(bno)->addRecord(rec);
+	delete rec;
 }
 
 void removeRecord(char*cmd, void *par)

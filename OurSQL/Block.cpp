@@ -97,14 +97,9 @@ FILE * Block::getFilePos()
 	return fp;
 }
 
-void Block::writeToFiles()
+void Block::writeToFile()
 {
 	fwrite(head, BLOCK_SIZE, 1, fp);
-}
-
-void Block::deleteBlock()
-{
-	*(head + 4) = 0;
 }
 
 void Block::showBlock()
