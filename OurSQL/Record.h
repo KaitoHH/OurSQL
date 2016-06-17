@@ -8,7 +8,7 @@ public:
 	Record();
 	~Record();
 
-	ushort getSize();
+	ushort getLength();
 
 	// 返回这个Record存放数据的首地址
 	byte* getData();

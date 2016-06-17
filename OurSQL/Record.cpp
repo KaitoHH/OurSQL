@@ -11,7 +11,7 @@ Record::~Record()
 {
 }
 
-ushort Record::getSize()
+ushort Record::getLength()
 {
 	return 0;
 }

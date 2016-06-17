@@ -31,8 +31,8 @@ public:
 	ushort getRecordCount();
 
 	// Record²Ù×÷
-	bool canAddRecord(Record);
-	bool addRecord(Record);
+	bool canAddRecord(Record*);
+	bool addRecord(Record*);
 	byte* getRecordData(ushort index);
 	ushort getRecordLength(ushort index);
 	bool removeRecord(ushort index);
@@ -49,6 +49,10 @@ private:
 	bool modified;
 
 	ushort& setFree();
+	ushort getFree();
 	ushort getRecordPointer(ushort index);
+	ushort& setRecordCount();
+	ushort& setRecordLength(ushort index);
+	ushort& setRecordPointer(ushort index);
 };
 

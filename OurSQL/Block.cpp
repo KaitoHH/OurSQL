@@ -18,32 +18,61 @@ uint Block::getBlockNum()
 	return blockNum;
 }
 
-bool Block::canAddRecord(Record)
+bool Block::canAddRecord(Record *r)
 {
-	return false;
+	ushort top = UINT_SIZE + 2 * USHORT_SIZE + 2 * USHORT_SIZE * getRecordCount();
+	return (top + 2 * USHORT_SIZE <= getFree() - r->getLength());
 }
 
-bool Block::addRecord(Record)
+bool Block::addRecord(Record *r)
 {
-	return false;
+	if (!canAddRecord(r))	return false;
+	setRecordLength(getRecordCount()) = r->getLength();
+	ushort pos = getFree() - r->getLength();
+	byte *p = head + pos;
+	strncpy(p, r->getData(), r->getLength());
+	setRecordCount()++;
+	return true;
 }
 
 byte * Block::getRecordData(ushort index)
 {
-	if (index >= getRecordCount()) {
-		return nullptr;
-	}
+	if (index >= getRecordCount())	return nullptr;
 	return head + getRecordPointer(index);
 }
 
 ushort Block::getRecordLength(ushort index)
 {
-	return *(ushort *)(head + UINT_SIZE + 2 * USHORT_SIZE + index * 2 * USHORT_SIZE);
+	setRecordLength(index);
 }
 
 bool Block::removeRecord(ushort index)
 {
-	return false;
+	if (index >= getRecordCount())	return false;
+	
+	int recordLength = getRecordLength(index);
+	// 删除最后一块不需要移动
+	if (index != getRecordCount() - 1) {
+		//将index后面的所有指针空间向左移,指向的Records部分向右移,更新Free指针
+		byte *last = head + getRecordPointer(index) + recordLength;
+		for (int i = index + 1; i < getRecordCount(); i++) {
+			int curRecordLength = getRecordLength(i);
+			// 指针位置左移
+			setRecordLength(i - 1) = curRecordLength;
+			setRecordPointer(i - 1) = getRecordPointer(i) + recordLength;
+
+			// Record右移
+			byte* buffer = new byte[curRecordLength];
+			strncpy(buffer, getRecordData(i), curRecordLength);
+			last -= curRecordLength;
+			strncpy(last, buffer, curRecordLength);
+			delete[] buffer;
+		}
+	}
+	//更新Free指针
+	setFree() += recordLength;
+	setRecordCount()--;
+	return true;
 }
 
 bool Block::isModified()
@@ -76,7 +105,27 @@ ushort& Block::setFree()
 	return *(ushort *)(head + UINT_SIZE + USHORT_SIZE);
 }
 
+ushort Block::getFree()
+{
+	return setFree();
+}
+
 ushort Block::getRecordPointer(ushort index)
+{
+	return setRecordPointer(index);
+}
+
+ushort & Block::setRecordCount()
+{
+	return *(ushort *)(head + UINT_SIZE);
+}
+
+ushort & Block::setRecordLength(ushort index)
+{
+	return *(ushort *)(head + UINT_SIZE + 2 * USHORT_SIZE + index * 2 * USHORT_SIZE);
+}
+
+ushort & Block::setRecordPointer(ushort index)
 {
 	return *(ushort *)(head + UINT_SIZE + 3 * USHORT_SIZE + index * 2 * USHORT_SIZE);
 }
@@ -88,5 +137,5 @@ uint Block::getNextBlockOffset()
 
 ushort Block::getRecordCount()
 {
-	return *(ushort *)(head + UINT_SIZE);
+	return setRecordCount();
 }
