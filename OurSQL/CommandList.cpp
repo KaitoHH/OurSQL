@@ -40,7 +40,8 @@ void newBlock(char*cmd, void *par)
 
 void useBlock(char*cmd, void *par)
 {
-	buffer.getBlock(atoi((char *)par));
+	if (buffer.getBlock(atoi((char *)par)) == nullptr)
+		printf("Block not exist!\n");
 }
 
 void showBuffer(char*cmd, void *par)

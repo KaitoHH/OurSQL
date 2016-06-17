@@ -24,12 +24,17 @@
     <ClCompile Include="Cmd.cpp" />
     <ClCompile Include="CommandList.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Record.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Block.h" />
     <ClInclude Include="BufferMgr.h" />
     <ClInclude Include="Cmd.h" />
     <ClInclude Include="CommandList.h" />
+    <ClInclude Include="Record.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="OurSQL.rc" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{251F50F2-C1F1-4BDE-A041-E91C9B38BD72}</ProjectGuid>
