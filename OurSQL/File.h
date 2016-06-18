@@ -47,6 +47,7 @@ private:
 	uint dataBlockCount;
 	uint totalBlockCount;
 
+	// ÐÞ¸ÄBlockµÄnextÖ¸Õë
 	void setNextOffest(Block *, uint offest);
 };
 
