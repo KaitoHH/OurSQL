@@ -74,20 +74,29 @@ void showBlock(char *cmd, void *par)
 void addRecord(char *cmd, void *par)
 {
 	char *str = (char*)par;
+	char name[100];
 	int bno;
 	char record[100];
-	sscanf(str, "%d %s", &bno, record);
+	sscanf(str, "%s %d %s", name, &bno, record);
 	Record *rec = new Record(record);
-	buffer.getBlock(bno)->addRecord(rec);
-	delete rec;
+	File *file = new File(name);
+	Block *block = file->readBlock(bno);
+	block->addRecord(rec);
+	file->writeToFile(block);
+	delete file;
 }
 
 void removeRecord(char *cmd, void *par)
 {
 	char *str = (char*)par;
+	char name[100];
 	int bno, rindex;
-	sscanf(str, "%d %d", &bno, &rindex);
-	buffer.getBlock(bno)->removeRecord(rindex);
+	sscanf(str, "%s %d %d", name, &bno, &rindex);
+	File *file = new File(name);
+	Block *block = file->readBlock(bno);
+	block->removeRecord(rindex);
+	file->writeToFile(block);
+	delete file;
 }
 
 void newFile(char *cmd, void *par)
