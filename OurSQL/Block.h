@@ -32,8 +32,8 @@ public:
 	ushort getRecordCount();
 
 	// Record²Ù×÷
-	bool canAddRecord(Record*);
-	bool addRecord(Record*);
+	bool canAddRecord(Table*);
+	bool addRecord(Table*);
 	byte* getRecordData(ushort index);
 	ushort getRecordLength(ushort index);
 	bool removeRecord(ushort index);

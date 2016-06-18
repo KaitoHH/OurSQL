@@ -24,13 +24,13 @@ uint Block::getBlockNum()
 	return blockNum;
 }
 
-bool Block::canAddRecord(Record *r)
+bool Block::canAddRecord(Table *r)
 {
 	ushort top = UINT_SIZE + 2 * USHORT_SIZE + 2 * USHORT_SIZE * getRecordCount();
 	return (top + 2 * USHORT_SIZE <= getFree() - r->getLength());
 }
 
-bool Block::addRecord(Record *r)
+bool Block::addRecord(Table *r)
 {
 	if (!canAddRecord(r))	return false;
 	modify();

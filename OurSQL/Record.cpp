@@ -2,23 +2,23 @@
 #include <cstring>
 
 
-Record::Record(const char * str)
+Table::Table(const char * str)
 {
 	data = new byte[strlen(str) + 1];
 	strcpy(data, str);
 }
 
 
-Record::~Record()
+Table::~Table()
 {
 }
 
-ushort Record::getLength()
+ushort Table::getLength()
 {
 	return strlen(data);
 }
 
-byte * Record::getData()
+byte * Table::getData()
 {
 	return data;
 }

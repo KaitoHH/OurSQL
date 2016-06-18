@@ -78,7 +78,7 @@ void addRecord(char *cmd, void *par)
 	int bno;
 	char record[100];
 	sscanf(str, "%s %d %s", name, &bno, record);
-	Record *rec = new Record(record);
+	Table *rec = new Table(record);
 	File *file = new File(name);
 	Block *block = file->readBlock(bno);
 	block->addRecord(rec);
