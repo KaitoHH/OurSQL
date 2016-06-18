@@ -30,10 +30,10 @@
     <ClCompile Include="Block.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Record.cpp">
+    <ClCompile Include="File.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="File.cpp">
+    <ClCompile Include="Table.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -50,10 +50,10 @@
     <ClInclude Include="Block.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="Record.h">
+    <ClInclude Include="File.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="File.h">
+    <ClInclude Include="Table.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

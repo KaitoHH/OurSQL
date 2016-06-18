@@ -25,7 +25,7 @@
     <ClCompile Include="CommandList.cpp" />
     <ClCompile Include="File.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Record.cpp" />
+    <ClCompile Include="Table.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Block.h" />
@@ -33,7 +33,7 @@
     <ClInclude Include="Cmd.h" />
     <ClInclude Include="CommandList.h" />
     <ClInclude Include="File.h" />
-    <ClInclude Include="Record.h" />
+    <ClInclude Include="Table.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="OurSQL.rc" />
