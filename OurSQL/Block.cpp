@@ -6,8 +6,14 @@ Block::Block(uint _blockNum) :blockNum(_blockNum)
 	head = new byte[BLOCK_SIZE];
 	memset(head, 0, sizeof(byte)*BLOCK_SIZE);
 	setFree() = BLOCK_SIZE;
-
+	modified = true;
 }
+
+Block::Block(uint bno, byte * _head) :blockNum(bno), head(_head)
+{
+	modified = false;
+}
+
 
 Block::~Block()
 {
@@ -27,6 +33,7 @@ bool Block::canAddRecord(Record *r)
 bool Block::addRecord(Record *r)
 {
 	if (!canAddRecord(r))	return false;
+	modify();
 	// 更新head部分的length
 	setRecordLength(getRecordCount()) = r->getLength();
 	// 分配空闲空间
@@ -56,7 +63,7 @@ ushort Block::getRecordLength(ushort index)
 bool Block::removeRecord(ushort index)
 {
 	if (index >= getRecordCount())	return false;
-
+	modify();
 	int recordLength = getRecordLength(index);
 	// 删除最后一块不需要移动
 	if (index != getRecordCount() - 1) {
@@ -82,6 +89,19 @@ bool Block::removeRecord(ushort index)
 	return true;
 }
 
+ushort & Block::setNext()
+{
+	modify();
+	return *(ushort *)head;
+}
+
+void Block::clear()
+{
+	setFree() = BLOCK_SIZE;
+	setRecordCount() = 0;
+	setNext() = 0;
+}
+
 bool Block::isModified()
 {
 	return modified;
@@ -92,14 +112,14 @@ const byte * Block::getBlockAddr()
 	return (const byte*)head;
 }
 
-FILE * Block::getFilePos()
+void Block::modify()
 {
-	return fp;
+	modified = true;
 }
 
-void Block::writeToFile()
+byte * Block::getHead()
 {
-	fwrite(head, BLOCK_SIZE, 1, fp);
+	return head;
 }
 
 void Block::showBlock()

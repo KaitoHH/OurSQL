@@ -11,7 +11,10 @@ void(*_commandFunctionList[])(char*, void*)
 	showBuffer,
 	showBlock,
 	addRecord,
-	removeRecord
+	removeRecord,
+	newFile,
+	showFile,
+	removeBlock
 };
 
 char * _commandNameList[]
@@ -23,45 +26,52 @@ char * _commandNameList[]
 	"showbuffer",
 	"showblock",
 	"addrecord",
-	"removerecord"
+	"removerecord",
+	"newfile",
+	"showfile",
+	"removeblock",
 };
 
-int _commandList_length = 7;
+int _commandList_length = 10;
 
 
-void notFindException(char* cmd, void* par)
+void notFindException(char *cmd, void *par)
 {
 	printf("%s is not a correct command.\n", cmd);
 }
 
-void exitCommand(char* cmd, void *par)
+void exitCommand(char *cmd, void *par)
 {
 	printf("Close the window to exit.\n");
 }
 
-void newBlock(char*cmd, void *par)
+void newBlock(char *cmd, void *par)
 {
-	buffer.addBlock(new Block(atoi((char *)par)));
+	File *file = new File((char*)par);
+	Block *temp = file->addNewBlock();
+	file->writeToFile(temp);
+	delete file;
+	//buffer.addBlock(new Block(atoi((char *)par)));
 }
 
-void useBlock(char*cmd, void *par)
+void useBlock(char *cmd, void *par)
 {
 	if (buffer.getBlock(atoi((char *)par)) == nullptr)
 		printf("Block not exist!\n");
 }
 
-void showBuffer(char*cmd, void *par)
+void showBuffer(char *cmd, void *par)
 {
 	buffer.showBlock();
 }
 
-void showBlock(char*cmd, void *par)
+void showBlock(char *cmd, void *par)
 {
 	int bno = atoi((char *)par);
 	buffer.getBlock(bno)->showBlock();
 }
 
-void addRecord(char*cmd, void *par)
+void addRecord(char *cmd, void *par)
 {
 	char *str = (char*)par;
 	int bno;
@@ -72,10 +82,33 @@ void addRecord(char*cmd, void *par)
 	delete rec;
 }
 
-void removeRecord(char*cmd, void *par)
+void removeRecord(char *cmd, void *par)
 {
 	char *str = (char*)par;
 	int bno, rindex;
 	sscanf(str, "%d %d", &bno, &rindex);
 	buffer.getBlock(bno)->removeRecord(rindex);
+}
+
+void newFile(char *cmd, void *par)
+{
+	File::initFile((char*)par);
+}
+
+void showFile(char *cmd, void *par)
+{
+	File *file = new File((char*)par);
+	file->showFile();
+	delete file;
+}
+
+void removeBlock(char *cmd, void *par)
+{
+	char *str = (char*)par;
+	char name[100];
+	int bno, front;
+	sscanf(str, "%s %d %d", name, &bno, &front);
+	File *file = new File(name);
+	file->removeBlock(file->readBlock(bno), front);
+	delete file;
 }

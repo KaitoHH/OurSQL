@@ -22,6 +22,7 @@ class Block
 {
 public:
 	Block(uint);
+	Block(uint, byte*);
 	~Block();
 	uint getBlockNum();
 
@@ -37,22 +38,24 @@ public:
 	ushort getRecordLength(ushort index);
 	bool removeRecord(ushort index);
 
+	ushort& setNext();
+	void clear();
 	bool isModified();
-	FILE* getFilePos();
-	void writeToFile();
+	void modify();
+	byte* getHead();
 
 	void showBlock();
 private:
 	uint blockNum;
 	byte *head;
-	FILE *fp;
 	bool modified;
 
-	ushort& setFree();
 	ushort getFree();
 	ushort getRecordPointer(ushort index);
+	ushort& setFree();
 	ushort& setRecordCount();
 	ushort& setRecordLength(ushort index);
 	ushort& setRecordPointer(ushort index);
+
 };
 

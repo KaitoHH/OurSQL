@@ -35,12 +35,6 @@ void BufferMgr::addBlock(Block *b)
 
 void BufferMgr::removeBlock(uint bno)
 {
-	if (block[bno]->isModified()) {
-		// TODO:Ð´»ØÎÄ¼þ
-		printf("TODO:block #%d is written back to files.\n", bno);
-		block[bno]->writeToFile();
-		//fwrite(block[bno]->getBlockAddr(), BLOCK_SIZE, 1, block[bno]->getFilePos());
-	}
 	delete block[bno];
 	block[bno] = nullptr;
 	freeList.push_back(bno);
