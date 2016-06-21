@@ -14,7 +14,8 @@ void(*_commandFunctionList[])(char*, void*)
 	removeRecord,
 	newFile,
 	showFile,
-	removeBlock
+	removeBlock,
+	print
 };
 
 char * _commandNameList[]
@@ -30,9 +31,10 @@ char * _commandNameList[]
 	"newfile",
 	"showfile",
 	"removeblock",
+	"print"
 };
 
-int _commandList_length = 10;
+int _commandList_length = 11;
 
 
 void notFindException(char *cmd, void *par)
@@ -120,4 +122,14 @@ void removeBlock(char *cmd, void *par)
 	File *file = new File(name);
 	file->removeBlock(file->readBlock(bno), front);
 	delete file;
+}
+
+void print(char *cmd, void *par)
+{
+	char str[100];
+	int times = 0;
+	int rtn = sscanf((char *)par, "%d %s", &times, str);
+	printf("%d\n", rtn);
+	while (times--)
+		printf("%s\n", str);
 }

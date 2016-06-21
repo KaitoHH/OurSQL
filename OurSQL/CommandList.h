@@ -43,3 +43,5 @@ void showFile(char *cmd, void *par);
 ** 删除数据文件filename的第blocknum块，front为被删除块的前一块
 */
 void removeBlock(char *cmd, void *par);
+
+void print(char *cmd, void *par);
