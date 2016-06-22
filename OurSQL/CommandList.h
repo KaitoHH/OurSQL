@@ -2,7 +2,7 @@
 #include "BufferMgr.h"
 #include "File.h"
 #include "Table.h"
-extern BufferMgr dataBaseBuffer;
+extern BufferMgr databaseBuffer;
 void notFindException(char* cmd, void* par);
 
 void exitCommand(char* cmd, void *par);
@@ -52,3 +52,9 @@ void createTable(char *cmd, void *par);
 
 /*打印表结构*/
 void showTableStructure(char *cmd, void *par);
+
+/*创建record*/
+void createRecord(char *cmd, void *par);
+
+/*输出record*/
+void showRecord(char *cmd, void *par);

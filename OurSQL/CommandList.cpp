@@ -17,7 +17,9 @@ void(*_commandFunctionList[])(char*, void*)
 	removeBlock,
 	print,
 	createTable,
-	showTableStructure
+	showTableStructure,
+	createRecord,
+	showRecord
 };
 
 char * _commandNameList[]
@@ -35,7 +37,9 @@ char * _commandNameList[]
 	"removeblock",
 	"print",
 	"createtable",
-	"showtable"
+	"showtable",
+	"createRecord",
+	"showRecord"
 };
 
 int _commandList_length = 13;
@@ -55,7 +59,7 @@ void newBlock(char *cmd, void *par)
 {
 	File *file = new File((char*)par);
 	Block *temp = file->addNewBlock();
-	dataBaseBuffer.addBlock(file->getFileName(), temp);
+	file->writeToFile(temp);
 	delete file;
 	//buffer.addBlock(new Block(atoi((char *)par)));
 }
@@ -67,7 +71,7 @@ void useBlock(char *cmd, void *par)
 
 void showBuffer(char *cmd, void *par)
 {
-	dataBaseBuffer.showBlock();
+
 }
 
 void showBlock(char *cmd, void *par)
@@ -153,9 +157,8 @@ void createTable(char *cmd, void *par)
 		Column c(type, length, name);
 		tableStructure.push_back(c);
 	}
-	Table::initTable(table);
-	Table t(table);
-	t.structTable(tableStructure);
+	Table::initTable(table, tableStructure);
+	
 }
 
 void showTableStructure(char *cmd, void *par)
@@ -166,4 +169,14 @@ void showTableStructure(char *cmd, void *par)
 	Table t(table);
 	//t.readStructure(tableStructure);
 	t.showTableStructure();
+}
+
+void createRecord(char *cmd, void *par)
+{
+	
+}
+
+void showRecord(char *cmd, void *par)
+{
+
 }

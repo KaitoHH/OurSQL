@@ -18,11 +18,15 @@ class Column
 public:
 	Column();
 	Column(byte _dataType, ushort _dataLength, char* _dataName);
-	byte get_dataType();
-	ushort get_dataLength();
-	char* get_dataName();
+	byte get_dataType() const;
+	ushort get_dataLength()const;
+	char* get_dataName()const;
+	Column& operator=(const Column &p1);
 private:
 	byte dataType;
 	ushort dataLength;
 	char* dataName;
+	
+	//Column operator=(const Column &p1);
 };
+

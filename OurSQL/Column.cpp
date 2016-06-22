@@ -16,18 +16,25 @@ Column::Column(byte _dataType, ushort _dataLength, char* _dataNmae)
 	//dataName = _dataNmae;
 }
 
-byte Column::get_dataType()
+byte Column::get_dataType() const
 {
 	return dataType;
 }
 
-ushort Column::get_dataLength()
+ushort Column::get_dataLength() const
 {
 	return dataLength;
 }
 
-char* Column::get_dataName()
+char* Column::get_dataName()const
 {
 	return dataName;
 }
 
+Column& Column::operator=(const Column &p1)
+{
+	this->dataType = p1.get_dataType();
+	this->dataLength = p1.get_dataLength();
+	strcpy(this->dataName, p1.get_dataName());
+	return *this;
+}

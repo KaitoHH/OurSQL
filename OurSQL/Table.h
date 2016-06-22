@@ -31,19 +31,21 @@ class Table
 {
 public:
 	Table(const char *);
-	static void initTable(const char *);
+	static void initTable(const char *,std::vector<Column>);
 	~Table();
-	bool structTable(std::vector<Column> tableStructure); 
-	bool readStructure(std::vector<Column> &tableStructure);
+	static bool structTable(std::vector<Column> _tableStructure,FILE*); 
+	bool readStructure(std::vector<Column> _tableStructure);
 	void showTableStructure();
-	//Record parseRecord();
-	//formRecord();
+	byte* parseRecord(byte* record,ushort index);
+	byte* formRecord(std::vector<byte*>);
 
 	//ushort getLength();
 
 
 private:
 	FILE *fileName;
-
+	std::vector<ushort> variableAttributePosition;
+	int fixedLength;
+	std::vector<Column*> tableStructure;
 };
 
