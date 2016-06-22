@@ -39,6 +39,9 @@
     <ClCompile Include="Column.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="bufferId.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Cmd.h">
@@ -60,6 +63,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Column.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="bufferId.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

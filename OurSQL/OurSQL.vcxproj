@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Block.cpp" />
+    <ClCompile Include="bufferId.cpp" />
     <ClCompile Include="BufferMgr.cpp" />
     <ClCompile Include="Cmd.cpp" />
     <ClCompile Include="Column.cpp" />
@@ -30,6 +31,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Block.h" />
+    <ClInclude Include="bufferId.h" />
     <ClInclude Include="BufferMgr.h" />
     <ClInclude Include="Cmd.h" />
     <ClInclude Include="CommandList.h" />

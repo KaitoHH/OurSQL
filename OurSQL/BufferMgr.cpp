@@ -11,40 +11,62 @@ BufferMgr::BufferMgr()
 
 BufferMgr::~BufferMgr()
 {
+	printf("[Buffer Mgr]Now writing buffer back to files...\n");
+	// 写回文件
+	for (auto i = numMap.begin(); i != numMap.end(); i++) {
+		Block *b = block[i->second];
+		if (b->isModified()) {
+			File file(i->first.fileName);
+			file.writeToFile(b);
+			printf("[Buffer Mgr]Block #%d in %s\n", i->first.blockNum, i->first.fileName);
+		}
+	}
 }
 
-void BufferMgr::addBlock(Block *b)
+void BufferMgr::addBlock(const char *file, Block *b)
 {
+	if (numMap.find(bufferId(file, b->getBlockNum())) != numMap.end())
+		return;
 	int nextBlock;
-	if (freeList.size()) {
-		nextBlock = freeList[0];
-	}
-	else if (curSize < MAX_BLOCK_SIZE) {
+	if (curSize < MAX_BLOCK_SIZE) {
 		nextBlock = curSize++;
 	}
 	else {
 		// LRU替换策略
 		nextBlock = getAndReleaseLruBlock();
-		delete block[nextBlock];
+		removeBlock(nextBlock);
 	}
+	bufferId *bid = new bufferId(file, b->getBlockNum());
 	block[nextBlock] = b;
-	numMap[b->getBlockNum()] = nextBlock;
+	blockInfo[nextBlock] = bid;
+	numMap[*bid] = nextBlock;
 	leastList.push_front(nextBlock);
 	leastAddr[nextBlock] = leastList.begin();
+
+	printf("[Buffer Mgr]Block #%d in %s is added to Buffer\n", b->getBlockNum(), file);
 }
 
 void BufferMgr::removeBlock(uint bno)
 {
+	// 写回文件
+	if (block[bno]->isModified()) {
+		File file(blockInfo[bno]->fileName);
+		file.writeToFile(block[bno]);
+		printf("[Buffer Mgr]Block #%d in %s is written back to files\n", block[bno]->getBlockNum(), blockInfo[bno]->fileName);
+	}
+	numMap.erase(*blockInfo[bno]);
 	delete block[bno];
+	//delete blockInfo[bno];
+	blockInfo[bno] = nullptr;
 	block[bno] = nullptr;
-	freeList.push_back(bno);
 }
 
-Block * BufferMgr::getBlock(uint BlockNum)
+Block * BufferMgr::getBlock(const char* file, uint BlockNum)
 {
-	if (numMap.find(BlockNum) == numMap.end())
+	bufferId id = bufferId(file, BlockNum);
+	if (numMap.find(id) == numMap.end())
 		return nullptr;
-	int retBlock = numMap[BlockNum];
+	int retBlock = numMap[id];
 
 	// 更新LRU表
 	auto p = leastAddr[retBlock];
@@ -52,6 +74,7 @@ Block * BufferMgr::getBlock(uint BlockNum)
 	leastAddr[*p] = leastList.begin();
 	leastList.erase(p);
 
+	printf("[Buffer Mgr]Block #%d in %s is found in Buffer\n", blockInfo[retBlock]->blockNum, blockInfo[retBlock]->fileName);
 	return block[retBlock];
 }
 

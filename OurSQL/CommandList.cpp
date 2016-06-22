@@ -55,26 +55,24 @@ void newBlock(char *cmd, void *par)
 {
 	File *file = new File((char*)par);
 	Block *temp = file->addNewBlock();
-	file->writeToFile(temp);
+	dataBaseBuffer.addBlock(file->getFileName(), temp);
 	delete file;
 	//buffer.addBlock(new Block(atoi((char *)par)));
 }
 
 void useBlock(char *cmd, void *par)
 {
-	if (buffer.getBlock(atoi((char *)par)) == nullptr)
-		printf("Block not exist!\n");
+
 }
 
 void showBuffer(char *cmd, void *par)
 {
-	buffer.showBlock();
+	dataBaseBuffer.showBlock();
 }
 
 void showBlock(char *cmd, void *par)
 {
-	int bno = atoi((char *)par);
-	buffer.getBlock(bno)->showBlock();
+
 }
 
 void addRecord(char *cmd, void *par)

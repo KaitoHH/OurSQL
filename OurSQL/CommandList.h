@@ -2,7 +2,7 @@
 #include "BufferMgr.h"
 #include "File.h"
 #include "Table.h"
-extern BufferMgr buffer;
+extern BufferMgr dataBaseBuffer;
 void notFindException(char* cmd, void* par);
 
 void exitCommand(char* cmd, void *par);

@@ -1,6 +1,7 @@
 #pragma once
 #include <cstdio>
 #include "Table.h"
+
 #define BLOCK_SIZE 4096
 #define UINT_SIZE sizeof(uint)
 #define USHORT_SIZE sizeof(ushort)

@@ -1,7 +1,7 @@
 #include "Cmd.h"
 #include "BufferMgr.h"
-#include "File.h"
-BufferMgr buffer;
+
+BufferMgr dataBaseBuffer;
 
 int main()
 {

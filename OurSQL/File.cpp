@@ -1,10 +1,10 @@
 #include "File.h"
+#include "BufferMgr.h"
 
-
-
-File::File(const char* fileName)
+extern BufferMgr dataBaseBuffer;
+File::File(const char* filename) :fileName(filename)
 {
-	filePt = fopen(fileName, "rb+");
+	filePt = fopen(filename, "rb+");
 	fread(&firstDataBlock, UINT_SIZE, 1, filePt);
 	fread(&lastDataBlock, UINT_SIZE, 1, filePt);
 	fread(&firstFreeBlock, UINT_SIZE, 1, filePt);
@@ -24,7 +24,7 @@ File::~File()
 	fwrite(&dataBlockCount, UINT_SIZE, 1, filePt);
 	fwrite(&totalBlockCount, UINT_SIZE, 1, filePt);
 	fclose(filePt);
-	printf("File Closed.\n");
+	//printf("File Closed.\n");
 }
 
 void File::filePtChangeTo(uint offest)
@@ -58,6 +58,7 @@ Block* File::addNewBlock()
 
 void File::removeBlock(Block *block, uint front)
 {
+	dataBaseBuffer.addBlock(fileName, block);
 	if (front) {
 		setNextOffest(readBlock(front), block->getNextBlockOffset());
 	}
@@ -68,7 +69,7 @@ void File::removeBlock(Block *block, uint front)
 		lastDataBlock = front;
 	}
 	block->clear();
-	writeToFile(block);
+	//writeToFile(block);
 	if (firstFreeBlock) {
 		setNextOffest(readBlock(lastFreeBlock), block->getBlockNum());
 		lastFreeBlock = block->getBlockNum();
@@ -81,10 +82,19 @@ void File::removeBlock(Block *block, uint front)
 
 Block * File::readBlock(uint offest)
 {
+	// 先从dataBaseBuffer中找
+	Block *target = dataBaseBuffer.getBlock(fileName, offest);
+	if (target != nullptr) {
+		return target;
+	}
 	filePtChangeTo(offest);
-	byte* buffer = new byte[BLOCK_SIZE];
-	fread(buffer, BLOCK_SIZE, 1, filePt);
-	return new Block(offest, buffer);
+	byte* _buffer = new byte[BLOCK_SIZE];
+	fread(_buffer, BLOCK_SIZE, 1, filePt);
+
+	target = new Block(offest, _buffer);
+	// 置入dataBaseBuffer
+	dataBaseBuffer.addBlock(fileName, target);
+	return target;
 }
 
 void File::writeToFile(Block *block)
@@ -105,10 +115,16 @@ void File::showFile()
 
 }
 
+const char * File::getFileName()
+{
+	return fileName;
+}
+
 void File::setNextOffest(Block * temp, uint offest)
 {
 	temp->setNext() = offest;
-	writeToFile(temp);
+	dataBaseBuffer.addBlock(fileName, temp);
+	//writeToFile(temp);
 }
 
 void File::initFile(const char * filename)

@@ -1,6 +1,8 @@
 #pragma once
 #include <cstdio>
 #include "Block.h"
+#define MAX_FILENAME_LENGTH 64
+
 /* 文件结构
 ** ------------
 ** |   FCB    | 4k
@@ -38,6 +40,7 @@ public:
 	Block* readBlock(uint offest);
 	void writeToFile(Block *);
 	void showFile();
+	const char* getFileName();
 private:
 	FILE *filePt;
 	uint firstDataBlock;
@@ -47,6 +50,7 @@ private:
 	uint dataBlockCount;
 	uint totalBlockCount;
 
+	const char *fileName;
 	// 修改Block的next指针
 	void setNextOffest(Block *, uint offest);
 };
