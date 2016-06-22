@@ -26,8 +26,9 @@ uint Block::getBlockNum()
 
 bool Block::canAddRecord(Table *r)
 {
-	ushort top = UINT_SIZE + 2 * USHORT_SIZE + 2 * USHORT_SIZE * getRecordCount();
-	return (top + 2 * USHORT_SIZE <= getFree() - r->getLength());
+//	ushort top = UINT_SIZE + 2 * USHORT_SIZE + 2 * USHORT_SIZE * getRecordCount();
+//	return (top + 2 * USHORT_SIZE <= getFree() - r->getLength());
+	return true;
 }
 
 bool Block::addRecord(Table *r)
@@ -35,16 +36,16 @@ bool Block::addRecord(Table *r)
 	if (!canAddRecord(r))	return false;
 	modify();
 	// 更新head部分的length
-	setRecordLength(getRecordCount()) = r->getLength();
+//	setRecordLength(getRecordCount()) = r->getLength();
 	// 分配空闲空间
-	ushort pos = getFree() - r->getLength();
+//	ushort pos = getFree() - r->getLength();
 	// 更新指针
-	setRecordPointer(getRecordCount()) = pos;
-	byte *p = head + pos;
+//	setRecordPointer(getRecordCount()) = pos;
+//	byte *p = head + pos;
 	// 拷贝数据
-	strncpy(p, r->getData(), r->getLength());
+//	strncpy(p, r->getData(), r->getLength());
 	// 更新Free指针
-	setFree() -= r->getLength();
+//	setFree() -= r->getLength();
 	setRecordCount()++;
 	return true;
 }

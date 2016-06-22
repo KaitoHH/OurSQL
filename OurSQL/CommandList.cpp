@@ -15,7 +15,9 @@ void(*_commandFunctionList[])(char*, void*)
 	newFile,
 	showFile,
 	removeBlock,
-	print
+	print,
+	createTable,
+	showTableStructure
 };
 
 char * _commandNameList[]
@@ -31,10 +33,12 @@ char * _commandNameList[]
 	"newfile",
 	"showfile",
 	"removeblock",
-	"print"
+	"print",
+	"createtable",
+	"showtable"
 };
 
-int _commandList_length = 11;
+int _commandList_length = 13;
 
 
 void notFindException(char *cmd, void *par)
@@ -132,4 +136,36 @@ void print(char *cmd, void *par)
 	printf("%d\n", rtn);
 	while (times--)
 		printf("%s\n", str);
+}
+
+void createTable(char *cmd, void *par)
+{
+	char table[100];
+	int attributeNumber;
+	std::vector<Column> tableStructure;
+	sscanf((char *)par, "%s %d", table, &attributeNumber);
+	for (int i = 0; i < attributeNumber; i++)
+	{
+		byte type;
+		ushort length;
+		char name[61];
+		int sn = scanf("%c %hu %s", &type, &length, name);
+		getchar();
+		if (sn != 3) printf("error");
+		Column c(type, length, name);
+		tableStructure.push_back(c);
+	}
+	Table::initTable(table);
+	Table t(table);
+	t.structTable(tableStructure);
+}
+
+void showTableStructure(char *cmd, void *par)
+{
+	char table[100];
+	std::vector<Column> tableStructure;
+	sscanf((char*)par, "%s", table);
+	Table t(table);
+	//t.readStructure(tableStructure);
+	t.showTableStructure();
 }

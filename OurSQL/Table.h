@@ -1,4 +1,8 @@
 #pragma once
+#include <cstdio>
+#include <vector>
+#include "Column.h"
+
 typedef char byte;
 typedef unsigned short int ushort;
 
@@ -27,14 +31,19 @@ class Table
 {
 public:
 	Table(const char *);
+	static void initTable(const char *);
 	~Table();
+	bool structTable(std::vector<Column> tableStructure); 
+	bool readStructure(std::vector<Column> &tableStructure);
+	void showTableStructure();
+	//Record parseRecord();
+	//formRecord();
 
-	ushort getLength();
+	//ushort getLength();
 
-	// 返回这个Record存放数据的首地址
-	byte* getData();
 
 private:
-	byte* data;
+	FILE *fileName;
+
 };
 

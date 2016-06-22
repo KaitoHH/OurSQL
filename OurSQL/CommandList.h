@@ -1,6 +1,7 @@
 #pragma once
 #include "BufferMgr.h"
 #include "File.h"
+#include "Table.h"
 extern BufferMgr buffer;
 void notFindException(char* cmd, void* par);
 
@@ -45,3 +46,9 @@ void showFile(char *cmd, void *par);
 void removeBlock(char *cmd, void *par);
 
 void print(char *cmd, void *par);
+
+/*创建一个table*/
+void createTable(char *cmd, void *par);
+
+/*打印表结构*/
+void showTableStructure(char *cmd, void *par);

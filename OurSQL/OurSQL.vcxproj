@@ -22,6 +22,7 @@
     <ClCompile Include="Block.cpp" />
     <ClCompile Include="BufferMgr.cpp" />
     <ClCompile Include="Cmd.cpp" />
+    <ClCompile Include="Column.cpp" />
     <ClCompile Include="CommandList.cpp" />
     <ClCompile Include="File.cpp" />
     <ClCompile Include="main.cpp" />
@@ -34,6 +35,7 @@
     <ClInclude Include="CommandList.h" />
     <ClInclude Include="File.h" />
     <ClInclude Include="Table.h" />
+    <ClInclude Include="Column.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="OurSQL.rc" />
@@ -61,7 +63,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v120</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
