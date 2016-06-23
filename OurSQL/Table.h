@@ -36,12 +36,13 @@ public:
 	static bool structTable(std::vector<Column> _tableStructure, FILE*);
 	void showTableStructure();
 	byte* parseRecord(byte* record, ushort index);
-	byte* formRecord(std::vector<byte*>&,int&);
+	byte* formRecord(std::vector<byte*>&, int&);
 	byte* getColumnData(ushort index);
 	int getColumnSize();
 	int compareRecord(byte* record, byte* conditionData, int dataPostion);
 	void printTitle();
 	void printRecord(byte* record);
+	static int condition(int, char ch);
 private:
 	FILE *fileName;
 	std::vector<ushort> variableAttributePosition;

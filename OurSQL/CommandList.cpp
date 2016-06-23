@@ -22,12 +22,16 @@ void(*_commandFunctionList[])(char*, void*)
 	leaveDatabase,
 	removeTable,
 	showAllTable,
-	insertRecord
+	insertRecord,
+	selectRecord,
+	switchLog,
+	deleteRecord,
+	updateRecord
 };
 
 char * _commandNameList[]
 = {
-	"\n",
+	"",
 	"newblock",
 	"showbuffer",
 	"showblock",
@@ -44,10 +48,14 @@ char * _commandNameList[]
 	"leavedb",
 	"removetable",
 	"showalltable",
-	"insert"
+	"insert",
+	"select",
+	"switchlog",
+	"delete",
+	"update"
 };
 
-int _commandList_length = 18;
+int _commandList_length = 22;
 
 
 void notFindException(char *cmd, void *par)
@@ -244,4 +252,88 @@ void insertRecord(char *cmd, void *par)
 	int length;
 	byte* record = table.formRecord(originalData, length);
 	file.addRecord(record, length);
+	table.printRecord(record);
+}
+
+void switchLog(char *cmd, void *par)
+{
+	printf("Buffer Log: %d\n", databaseBuffer.switchLog());
+}
+
+void selectRecord(char *cmd, void *par)
+{
+	Table *table;
+	File *file;
+	bool showall;
+	byte *column;
+	int index;
+	char condition;
+	queryShell(par, table, file, showall, column, index, condition);
+	table->printTitle();
+	uint bno = file->getHead();
+	while (bno) {
+		Block *b = file->readBlock(bno);
+		int cnt = b->getRecordCount();
+		for (int i = 0; i < cnt; i++) {
+			byte* byt = b->getRecordData(i);
+			uint len = b->getRecordLength(i);
+			if (showall || Table::condition(table->compareRecord(byt, column, index), condition))
+				table->printRecord(byt);
+		}
+		bno = b->getNextBlockOffset();
+	}
+}
+
+void deleteRecord(char *cmd, void *par)
+{
+	Table *table;
+	File *file;
+	bool showall;
+	byte *column;
+	int index;
+	char condition;
+	queryShell(par, table, file, showall, column, index, condition);
+	uint bno = file->getHead();
+	while (bno) {
+		Block *b = file->readBlock(bno);
+		int cnt = b->getRecordCount();
+		for (int i = 0; i < cnt; i++) {
+			byte* byt = b->getRecordData(i);
+			uint len = b->getRecordLength(i);
+			if (showall || Table::condition(table->compareRecord(byt, column, index), condition)) {
+				file->removeRecord(b->getBlockNum(), i);
+				cnt--;
+				i--;
+			}
+		}
+		bno = b->getNextBlockOffset();
+	}
+}
+
+void updateRecord(char *cmd, void *par)
+{
+
+}
+
+
+void queryShell(void *par, Table *&table, File *&file, bool &showall, byte *&column, int &index, char &condition)
+{
+	char *tablename = new char[64];
+	char t[64];
+	sscanf((char*)par, "%s %s", tablename, t);
+	if (!curDatabase.length())
+		throw("Please select database first");
+	if (!databaseCategory.existTable(curDatabase, tablename))
+		throw("table not exist!");
+	std::string *schemaName = CategoryMgr::makePath(curDatabase.c_str(), tablename, "schema");
+	std::string *dataName = CategoryMgr::makePath(curDatabase.c_str(), tablename, "data");
+	table = new Table(schemaName->c_str());
+	file = new File(dataName->c_str());
+	if (!strcmp("where", t)) {
+		int k = scanf("c%d %c", &index, &condition);
+		if (k == 2) {
+			column = table->getColumnData(index - 1);
+			showall = false;
+		}
+	}
 }

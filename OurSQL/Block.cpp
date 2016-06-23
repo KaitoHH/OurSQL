@@ -43,7 +43,7 @@ bool Block::addRecord(byte* data, ushort length)
 	setRecordPointer(getRecordCount()) = pos;
 	byte *p = head + pos;
 	// 拷贝数据
-	strncpy(p, data, length);
+	memcpy(p, data, length);
 	// 更新Free指针
 	setFree() -= length;
 	setRecordCount()++;
@@ -78,9 +78,9 @@ bool Block::removeRecord(ushort index)
 
 			// Record右移
 			byte* buffer = new byte[curRecordLength];
-			strncpy(buffer, getRecordData(i), curRecordLength);
+			memcpy(buffer, getRecordData(i), curRecordLength);
 			last -= curRecordLength;
-			strncpy(last, buffer, curRecordLength);
+			memcpy(last, buffer, curRecordLength);
 			delete[] buffer;
 		}
 	}

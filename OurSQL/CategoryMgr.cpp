@@ -36,6 +36,7 @@ CategoryMgr::~CategoryMgr()
 			fout << *j << std::endl;
 		}
 	}
+	fout.close();
 }
 
 bool CategoryMgr::addDataBase(std::string dbName)

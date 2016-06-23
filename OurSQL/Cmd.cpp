@@ -19,7 +19,7 @@ bool Cmd::waitForCommand()
 	string s;
 	do {
 		getline(cin, s);
-	} while (s == "");
+	} while (s == "" && !cin.fail());
 
 	// 解析命令，分离命令和参数
 	char *cmd;

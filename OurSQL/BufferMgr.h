@@ -17,11 +17,12 @@ public:
 	int getAndReleaseLruBlock();
 	void clear();
 	void showBlock();
+	bool switchLog();
 private:
 	Block *block[MAX_BLOCK_SIZE];
 	bufferId *blockInfo[MAX_BLOCK_SIZE];
 	int curSize;
-
+	bool logRecord;
 	// 块号与BufferMgr内部序号的对应关系
 	std::map<bufferId, int>numMap;
 

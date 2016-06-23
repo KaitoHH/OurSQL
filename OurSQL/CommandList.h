@@ -60,3 +60,13 @@ void removeTable(char *cmd, void *par);
 void showAllTable(char *cmd, void *par);
 
 void insertRecord(char *cmd, void *par);
+
+void selectRecord(char *cmd, void *par);
+
+void deleteRecord(char *cmd, void *par);
+
+void updateRecord(char *cmd, void *par);
+
+void switchLog(char *cmd, void *par);
+
+void queryShell(void *par, Table *&table, File *&file, bool &showall, byte *&column, int &index, char &condition);

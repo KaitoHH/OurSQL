@@ -43,6 +43,8 @@ public:
 	void showFile();
 	const char* getFileName();
 	void addRecord(byte* head, uint length);
+	void removeRecord(uint bno, uint index);
+	uint getHead();
 private:
 	FILE *filePt;
 	uint firstDataBlock;

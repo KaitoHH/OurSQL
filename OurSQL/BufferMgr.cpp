@@ -4,6 +4,7 @@
 
 BufferMgr::BufferMgr()
 {
+	logRecord = false;
 	curSize = 0;
 	memset(block, 0, sizeof(block));
 }
@@ -33,8 +34,8 @@ void BufferMgr::addBlock(const char *file, Block *b)
 	numMap[*bid] = nextBlock;
 	leastList.push_front(nextBlock);
 	leastAddr[nextBlock] = leastList.begin();
-
-	printf("[Buffer Mgr]Block #%d in %s is added to Buffer\n", b->getBlockNum(), file);
+	if (logRecord)
+		printf("[Buffer Mgr]Block #%d in %s is added to Buffer\n", b->getBlockNum(), file);
 }
 
 void BufferMgr::removeBlock(uint bno)
@@ -43,7 +44,8 @@ void BufferMgr::removeBlock(uint bno)
 	if (block[bno]->isModified()) {
 		File file(blockInfo[bno]->fileName);
 		file.writeToFile(block[bno]);
-		printf("[Buffer Mgr]Block #%d in %s is written back to files\n", block[bno]->getBlockNum(), blockInfo[bno]->fileName);
+		if (logRecord)
+			printf("[Buffer Mgr]Block #%d in %s is written back to files\n", block[bno]->getBlockNum(), blockInfo[bno]->fileName);
 	}
 	numMap.erase(*blockInfo[bno]);
 	delete block[bno];
@@ -64,8 +66,8 @@ Block * BufferMgr::getBlock(const char* file, uint BlockNum)
 	leastList.push_front(*p);
 	leastAddr[*p] = leastList.begin();
 	leastList.erase(p);
-
-	printf("[Buffer Mgr]Block #%d in %s is found in Buffer\n", blockInfo[retBlock]->blockNum, blockInfo[retBlock]->fileName);
+	if (logRecord)
+		printf("[Buffer Mgr]Block #%d in %s is found in Buffer\n", blockInfo[retBlock]->blockNum, blockInfo[retBlock]->fileName);
 	return block[retBlock];
 }
 
@@ -84,9 +86,15 @@ void BufferMgr::showBlock()
 	}
 }
 
+bool BufferMgr::switchLog()
+{
+	return logRecord = !logRecord;
+}
+
 void BufferMgr::clear()
 {
-	printf("[Buffer Mgr]Now writing buffer back to files...\n");
+	if (logRecord)
+		printf("[Buffer Mgr]Now writing buffer back to files...\n");
 	// Ð´»ØÎÄ¼þ
 	for (auto i = numMap.begin(); i != numMap.end(); i++) {
 		Block *b = block[i->second];

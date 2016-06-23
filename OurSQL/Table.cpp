@@ -159,11 +159,11 @@ byte* Table::parseRecord(byte* record, ushort index)
 int Table::compareRecord(byte* record, byte* conditionData, int dataPostion)
 {
 	byte* recordData = parseRecord(record, dataPostion);
-	switch (tableStructure[dataPostion]->getDataType())
+	switch (tableStructure[dataPostion - 1]->getDataType())
 	{
 	case 1:return strcmp(recordData, conditionData);
 	case 2: return *recordData - *conditionData; break;
-	case 3:return *(int*)recordData > *(int*)conditionData; break;
+	case 3:return *(int*)recordData - *(int*)conditionData; break;
 	case 4:return *(double*)recordData - *(double*)conditionData; break;
 	case 5:return *(float*)recordData - *(float*)conditionData; break;
 	default: return 0; break;
@@ -177,13 +177,14 @@ void Table::printTitle()
 	{
 		printf("%8s|", tableStructure[i]->getDataName());
 	}
+	printf("\n");
 }
 
 void Table::printRecord(byte* record)
 {
 	for (int i = 1; i <= tableStructure.size(); i++)
 	{
-		switch (tableStructure[i-1]->getDataType())
+		switch (tableStructure[i - 1]->getDataType())
 		{
 		case 1:printf("%8s|", parseRecord(record, i)); break;
 		case 2:printf("%8c|", *parseRecord(record, i)); break;
@@ -193,5 +194,17 @@ void Table::printRecord(byte* record)
 		default:
 			break;
 		}
+	}
+	printf("\n");
+}
+
+int Table::condition(int rtn, char ch)
+{
+	if (!rtn) {
+		return ch == '=';
+	}
+	else {
+		return rtn > 0 ? ch == '>' : ch == '<';
+
 	}
 }

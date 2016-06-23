@@ -134,6 +134,20 @@ void File::addRecord(byte * head, uint length)
 		}
 		hasFreeBlock.erase(it);
 	}
+	Block *b = addNewBlock();
+	databaseBuffer.addBlock(fileName, b);
+	b->addRecord(head, length);
+}
+
+void File::removeRecord(uint bno, uint index)
+{
+	readBlock(bno)->removeRecord(index);
+	hasFreeBlock.insert(bno);
+}
+
+uint File::getHead()
+{
+	return firstDataBlock;
 }
 
 void File::setNextOffest(Block * temp, uint offest)
