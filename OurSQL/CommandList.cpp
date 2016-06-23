@@ -1,4 +1,5 @@
 #include "CommandList.h"
+#include "File.h"
 #include <cstdio>
 
 // ÔÚ´Ë×¢²áÃüÁî
@@ -14,7 +15,6 @@ void(*_commandFunctionList[])(char*, void*)
 	removeBlock,
 	createTable,
 	showTableStructure,
-	createRecord,
 	createDatabase,
 	removeDatabase,
 	showDatabase,
@@ -27,7 +27,7 @@ void(*_commandFunctionList[])(char*, void*)
 
 char * _commandNameList[]
 = {
-	"",
+	"\n",
 	"newblock",
 	"showbuffer",
 	"showblock",
@@ -37,7 +37,6 @@ char * _commandNameList[]
 	"removeblock",
 	"createtable",
 	"showtable",
-	"createrecord",
 	"createdb",
 	"removedb",
 	"showdb",
@@ -48,7 +47,7 @@ char * _commandNameList[]
 	"insert"
 };
 
-int _commandList_length = 19;
+int _commandList_length = 18;
 
 
 void notFindException(char *cmd, void *par)
@@ -95,7 +94,11 @@ void newFile(char *cmd, void *par)
 
 void showFile(char *cmd, void *par)
 {
-	File *file = new File((char*)par);
+	char* tablename = (char*)par;
+	if (!curDatabase.length())
+		throw("Please select database first");
+	std::string *schemaName = CategoryMgr::makePath(curDatabase.c_str(), tablename, "schema");
+	File *file = new File(schemaName->c_str());
 	file->showFile();
 	delete file;
 }
@@ -159,29 +162,6 @@ void showTableStructure(char *cmd, void *par)
 	std::string *filename = CategoryMgr::makePath(curDatabase.c_str(), table, "schema");
 	Table t(filename->c_str());
 	t.showTableStructure();
-}
-
-void createRecord(char *cmd, void *par)
-{
-	char table[100];
-	int id;
-	int age;
-	char name[100];
-	sscanf((char*)par, "%d %d %s", &id, &age, name);
-	Table t("stu");
-	std::vector<byte*> originalData;
-	originalData.push_back((byte*)&id);
-	originalData.push_back((byte*)&age);
-	originalData.push_back((byte*)&name);
-	byte* record;
-	byte* b = originalData[0];
-	int a = *(int*)(b);
-	int length;
-	record = t.formRecord(originalData, length);
-	id = *(int*)t.parseRecord(record, 2);
-	char* s = (char*)t.parseRecord(record, 3);
-	printf("%d\n", id);
-	printf("%s\n", s);
 }
 
 void createDatabase(char *cmd, void *par)
@@ -250,9 +230,12 @@ void insertRecord(char *cmd, void *par)
 	char *tablename = (char*)par;
 	if (!curDatabase.length())
 		throw("Please select database first");
+	if (!databaseCategory.existTable(curDatabase, tablename))
+		throw("table not exist!");
 	std::string *schemaName = CategoryMgr::makePath(curDatabase.c_str(), tablename, "schema");
 	std::string *dataName = CategoryMgr::makePath(curDatabase.c_str(), tablename, "data");
 	Table table(schemaName->c_str());
+	File file(dataName->c_str());
 	std::vector<byte*> originalData;
 	for (int i = 0; i < table.getColumnSize(); i++) {
 		byte* data = table.getColumnData(i);
@@ -260,5 +243,5 @@ void insertRecord(char *cmd, void *par)
 	}
 	int length;
 	byte* record = table.formRecord(originalData, length);
-	//TODO
+	file.addRecord(record, length);
 }
