@@ -5,7 +5,7 @@
 
 typedef char byte;
 typedef unsigned short int ushort;
-enum CONDITION {GREAT,LESS,EQUAL};
+//enum CONDITION {GREAT,LESS,EQUAL};
 /* Table在文件中的结构
 ** -------------------------------------------------------
 ** |                          TCB                        | 64 bytes
@@ -39,7 +39,7 @@ public:
 	byte* formRecord(std::vector<byte*>&,int&);
 	byte* getColumnData(ushort index);
 	int getColumnSize();
-	bool compareRecord(byte* record, byte* conditionData, int dataPostion, CONDITION condition);
+	int compareRecord(byte* record, byte* conditionData, int dataPostion);
 	void printTitle();
 	void printRecord(byte* record);
 private:

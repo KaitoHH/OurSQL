@@ -156,22 +156,18 @@ byte* Table::parseRecord(byte* record, ushort index)
 	return data;
 }
 
-bool Table::compareRecord(byte* record, byte* conditionData, int dataPostion, CONDITION condition)
+int Table::compareRecord(byte* record, byte* conditionData, int dataPostion)
 {
 	byte* recordData = parseRecord(record, dataPostion);
-	/*switch (tableStructure[dataPostion]->getDataType())
+	switch (tableStructure[dataPostion]->getDataType())
 	{
-	case 1:switch (condition)
-	{
-	case GREAT:if ()
-	default:
-		break;
+	case 1:return strcmp(recordData, conditionData);
+	case 2: return *recordData - *conditionData; break;
+	case 3:return *(int*)recordData > *(int*)conditionData; break;
+	case 4:return *(double*)recordData - *(double*)conditionData; break;
+	case 5:return *(float*)recordData - *(float*)conditionData; break;
+	default: return 0; break;
 	}
-	default:
-		break;
-	}*/
-	return true;
-
 }
 
 void Table::printTitle()
