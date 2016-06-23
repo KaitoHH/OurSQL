@@ -1,5 +1,6 @@
 #pragma once
 #include <cstdio>
+#include <vector>
 #include "Block.h"
 #define MAX_FILENAME_LENGTH 64
 
@@ -54,5 +55,7 @@ private:
 	const char *fileName;
 	// 修改Block的next指针
 	void setNextOffest(Block *, uint offest);
+	// 还能够存放record的数据块
+	std::vector<uint>hasFreeBlock;
 };
 
