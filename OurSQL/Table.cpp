@@ -78,15 +78,15 @@ void Table::showTableStructure()
 }
 
 /*将数据组织成record的格式，并返回指针*/
-byte* Table::formRecord(std::vector<byte* > &originalData)
+byte* Table::formRecord(std::vector<byte* > &originalData,int& length)
 {
 	byte* record;
 	//数据存放起始点
 	ushort startPoint = variableAttributePosition.size() * 4;
-	ushort length = fixedLength;
+	length = fixedLength;
 	for each (ushort var in variableAttributePosition)
 	{
-		length += strlen(originalData[var]);
+		length += strlen(originalData[var])+1;
 	}
 	record = new byte[length];
 	//处理定长数据

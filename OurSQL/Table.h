@@ -36,7 +36,7 @@ public:
 	static bool structTable(std::vector<Column> _tableStructure, FILE*);
 	void showTableStructure();
 	byte* parseRecord(byte* record, ushort index);
-	byte* formRecord(std::vector<byte*>&);
+	byte* formRecord(std::vector<byte*>&,int&);
 	byte* getColumnData(ushort index);
 	int getColumnSize();
 private:

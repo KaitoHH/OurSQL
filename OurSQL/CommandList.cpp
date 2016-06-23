@@ -176,7 +176,8 @@ void createRecord(char *cmd, void *par)
 	byte* record;
 	byte* b = originalData[0];
 	int a = *(int*)(b);
-	record = t.formRecord(originalData);
+	int length;
+	record = t.formRecord(originalData,length);
 	id = *(int*)t.parseRecord(record, 2);
 	char* s = (char*)t.parseRecord(record, 3);
 	printf("%d\n", id);
@@ -257,6 +258,7 @@ void insertRecord(char *cmd, void *par)
 		byte* data = table.getColumnData(i);
 		originalData.push_back(data);
 	}
-	byte* record = table.formRecord(originalData);
+	int length;
+	byte* record = table.formRecord(originalData,length);
 	//TODO
 }
