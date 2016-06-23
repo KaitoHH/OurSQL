@@ -17,7 +17,9 @@ bool Cmd::waitForCommand()
 {
 	cout << _CMD_NAME_;
 	string s;
-	getline(cin, s);
+	do {
+		getline(cin, s);
+	} while (s == "");
 
 	// 解析命令，分离命令和参数
 	char *cmd;

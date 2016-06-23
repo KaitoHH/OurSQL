@@ -1,6 +1,6 @@
 #pragma once
 #include <cstdio>
-#include <vector>
+#include <set>
 #include "Block.h"
 #define MAX_FILENAME_LENGTH 64
 
@@ -42,7 +42,7 @@ public:
 	void writeToFile(Block *);
 	void showFile();
 	const char* getFileName();
-
+	void addRecord(byte* head, uint length);
 private:
 	FILE *filePt;
 	uint firstDataBlock;
@@ -56,6 +56,6 @@ private:
 	// 修改Block的next指针
 	void setNextOffest(Block *, uint offest);
 	// 还能够存放record的数据块
-	std::vector<uint>hasFreeBlock;
+	std::set<uint>hasFreeBlock;
 };
 

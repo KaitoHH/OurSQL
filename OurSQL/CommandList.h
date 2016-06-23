@@ -45,9 +45,6 @@ void createTable(char *cmd, void *par);
 /*打印表结构*/
 void showTableStructure(char *cmd, void *par);
 
-/*创建record*/
-void createRecord(char *cmd, void *par);
-
 void createDatabase(char *cmd, void *par);
 
 void removeDatabase(char *cmd, void *par);
