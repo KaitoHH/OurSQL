@@ -40,6 +40,8 @@ void BufferMgr::addBlock(const char *file, Block *b)
 
 void BufferMgr::removeBlock(uint bno)
 {
+	if (logRecord)
+		printf("[Buffer Mgr]Block #%d in %s is now removed\n", block[bno]->getBlockNum(), blockInfo[bno]->fileName);
 	// Ð´»ØÎÄ¼þ
 	if (block[bno]->isModified()) {
 		File file(blockInfo[bno]->fileName);
@@ -80,9 +82,10 @@ int BufferMgr::getAndReleaseLruBlock()
 
 void BufferMgr::showBlock()
 {
+	printf("%5s|%30s|%10s|\n", "no", "table", "blockNum");
 	for (int i = 0; i < MAX_BLOCK_SIZE; i++) {
 		if (block[i] != nullptr)
-			printf("%3d|%3d\n", i, block[i]->getBlockNum());
+			printf("%5d|%30s|%10d\n", i, blockInfo[i]->fileName, blockInfo[i]->blockNum);
 	}
 }
 

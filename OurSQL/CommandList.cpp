@@ -8,11 +8,6 @@ void(*_commandFunctionList[])(char*, void*)
 	notFindException,
 	newBlock,
 	showBuffer,
-	showBlock,
-	removeRecord,
-	newFile,
-	showFile,
-	removeBlock,
 	createTable,
 	showTableStructure,
 	createDatabase,
@@ -26,7 +21,7 @@ void(*_commandFunctionList[])(char*, void*)
 	selectRecord,
 	switchLog,
 	deleteRecord,
-	updateRecord
+	help
 };
 
 char * _commandNameList[]
@@ -34,11 +29,6 @@ char * _commandNameList[]
 	"",
 	"newblock",
 	"showbuffer",
-	"showblock",
-	"removerecord",
-	"newfile",
-	"showfile",
-	"removeblock",
 	"createtable",
 	"showtable",
 	"createdb",
@@ -52,34 +42,44 @@ char * _commandNameList[]
 	"select",
 	"switchlog",
 	"delete",
-	"update"
+	"help"
 };
 
-int _commandList_length = 22;
+int _commandList_length = 16;
 
 
 void notFindException(char *cmd, void *par)
 {
-	printf("%s is not a correct command.\n", cmd);
+	if (strcmp(cmd, ""))
+		printf("%s is not a correct command, use 'help' to see all commands.\n", cmd);
+}
+
+void help(char *cmd, void *par)
+{
+	printf("所有可使用的命令有:\n");
+	for (int i = 1; i <= _commandList_length; i++) {
+		printf("%s\n", _commandNameList[i]);
+	}
 }
 
 void newBlock(char *cmd, void *par)
 {
-	File *file = new File((char*)par);
-	Block *temp = file->addNewBlock();
-	file->writeToFile(temp);
-	delete file;
-	//buffer.addBlock(new Block(atoi((char *)par)));
+	char *tablename = (char*)par;
+	if (!curDatabase.length())
+		throw("Please select database first");
+	if (!databaseCategory.existTable(curDatabase, tablename))
+		throw("table not exist!");
+	std::string *schemaName = CategoryMgr::makePath(curDatabase.c_str(), tablename, "schema");
+	std::string *dataName = CategoryMgr::makePath(curDatabase.c_str(), tablename, "data");
+	Table table(schemaName->c_str());
+	File file(dataName->c_str());
+	Block *temp = file.addNewBlock();
+	file.readBlock(temp->getBlockNum());
 }
 
 void showBuffer(char *cmd, void *par)
 {
-
-}
-
-void showBlock(char *cmd, void *par)
-{
-
+	databaseBuffer.showBlock();
 }
 
 void removeRecord(char *cmd, void *par)
@@ -98,17 +98,6 @@ void removeRecord(char *cmd, void *par)
 void newFile(char *cmd, void *par)
 {
 	File::initFile((char*)par);
-}
-
-void showFile(char *cmd, void *par)
-{
-	char* tablename = (char*)par;
-	if (!curDatabase.length())
-		throw("Please select database first");
-	std::string *schemaName = CategoryMgr::makePath(curDatabase.c_str(), tablename, "schema");
-	File *file = new File(schemaName->c_str());
-	file->showFile();
-	delete file;
 }
 
 void removeBlock(char *cmd, void *par)
@@ -252,7 +241,6 @@ void insertRecord(char *cmd, void *par)
 	int length;
 	byte* record = table.formRecord(originalData, length);
 	file.addRecord(record, length);
-	table.printRecord(record);
 }
 
 void switchLog(char *cmd, void *par)
@@ -309,12 +297,6 @@ void deleteRecord(char *cmd, void *par)
 		bno = b->getNextBlockOffset();
 	}
 }
-
-void updateRecord(char *cmd, void *par)
-{
-
-}
-
 
 void queryShell(void *par, Table *&table, File *&file, bool &showall, byte *&column, int &index, char &condition)
 {

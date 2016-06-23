@@ -175,7 +175,16 @@ void Table::printTitle()
 	//printf("%8s", tableStructure[0]->getDataName());
 	for (int i = 0; i < tableStructure.size(); i++)
 	{
-		printf("%8s|", tableStructure[i]->getDataName());
+		switch (tableStructure[i]->getDataType())
+		{
+		case 1:printf("%40s|", tableStructure[i]->getDataName()); break;
+		case 2:printf("%10s|", tableStructure[i]->getDataName()); break;
+		case 3:printf("%10s|", tableStructure[i]->getDataName()); break;
+		case 4:printf("%10s|", tableStructure[i]->getDataName()); break;
+		case 5:printf("%10s|", tableStructure[i]->getDataName()); break;
+		default:
+			break;
+		}
 	}
 	printf("\n");
 }
@@ -186,11 +195,11 @@ void Table::printRecord(byte* record)
 	{
 		switch (tableStructure[i - 1]->getDataType())
 		{
-		case 1:printf("%8s|", parseRecord(record, i)); break;
-		case 2:printf("%8c|", *parseRecord(record, i)); break;
-		case 3:printf("%8d|", *(int*)parseRecord(record, i)); break;
-		case 4:printf("%8lf|", *(double*)parseRecord(record, i)); break;
-		case 5:printf("%8s|", *(float*)parseRecord(record, i)); break;
+		case 1:printf("%40s|", parseRecord(record, i)); break;
+		case 2:printf("%10c|", *parseRecord(record, i)); break;
+		case 3:printf("%10d|", *(int*)parseRecord(record, i)); break;
+		case 4:printf("%10lf|", *(double*)parseRecord(record, i)); break;
+		case 5:printf("%10f|", *(float*)parseRecord(record, i)); break;
 		default:
 			break;
 		}

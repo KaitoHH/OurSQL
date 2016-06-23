@@ -64,7 +64,7 @@ void Cmd::parse_command(const char* s, char*& cmd, void*& par)
 
 void(*Cmd::get_entry(char* cmd))(char*, void*)
 {
-	for (int i = 1; i < _commandList_length; i++) {
+	for (int i = 1; i <= _commandList_length; i++) {
 		if (!strcmp(_commandNameList[i], cmd))
 			return _commandFunctionList[i];
 	}

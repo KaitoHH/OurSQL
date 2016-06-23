@@ -12,10 +12,6 @@ File::File(const char* filename) :fileName(filename)
 	fread(&dataBlockCount, UINT_SIZE, 1, filePt);
 	fread(&totalBlockCount, UINT_SIZE, 1, filePt);
 	int bno = firstDataBlock;
-	while (bno) {
-		hasFreeBlock.insert(bno);
-		bno = readBlock(bno)->getNextBlockOffset();
-	}
 }
 
 
@@ -127,12 +123,12 @@ const char * File::getFileName()
 
 void File::addRecord(byte * head, uint length)
 {
-	while (hasFreeBlock.size()) {
-		auto it = hasFreeBlock.begin();
-		if (readBlock(*it)->addRecord(head, length)) {
+	int bno = firstDataBlock;
+	while (bno) {
+		if (readBlock(bno)->addRecord(head, length)) {
 			return;
 		}
-		hasFreeBlock.erase(it);
+		bno = readBlock(bno)->getNextBlockOffset();
 	}
 	Block *b = addNewBlock();
 	databaseBuffer.addBlock(fileName, b);
@@ -142,7 +138,6 @@ void File::addRecord(byte * head, uint length)
 void File::removeRecord(uint bno, uint index)
 {
 	readBlock(bno)->removeRecord(index);
-	hasFreeBlock.insert(bno);
 }
 
 uint File::getHead()

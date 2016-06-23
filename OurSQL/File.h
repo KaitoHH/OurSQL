@@ -57,7 +57,5 @@ private:
 	const char *fileName;
 	// 修改Block的next指针
 	void setNextOffest(Block *, uint offest);
-	// 还能够存放record的数据块
-	std::set<uint>hasFreeBlock;
 };
 
