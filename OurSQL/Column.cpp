@@ -64,7 +64,9 @@ byte Column::parseType(char _type, int &length)
 byte * Column::getData()
 {
 	byte *data = new byte[dataLength];
-	scanf(conlumnFormat[dataLength], &data);	// ∂¡»Î*
+	do {
+		scanf(conlumnFormat[dataType], data);	// ∂¡»Î*
+	} while (dataType == 2 && *data == ' ');
 	return data;
 }
 

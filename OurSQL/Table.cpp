@@ -25,7 +25,7 @@ Table::Table(const char * _fileName)
 		fread(&length, LENGTH_SIZE, 1, fileName);
 		fread(name, NAME_SIZE, 1, fileName);
 		Column *c = new Column(type, length, name);
-		if (type == 'v')
+		if (!c->isFixLength())
 			variableAttributePosition.push_back(i);
 		else
 			fixedLength += length;
@@ -78,7 +78,7 @@ void Table::showTableStructure()
 }
 
 /*将数据组织成record的格式，并返回指针*/
-byte* Table::formRecord(std::vector<byte* > &originalData,int& length)
+byte* Table::formRecord(std::vector<byte* > &originalData, int& length)
 {
 	byte* record;
 	//数据存放起始点
@@ -86,7 +86,7 @@ byte* Table::formRecord(std::vector<byte* > &originalData,int& length)
 	length = fixedLength;
 	for each (ushort var in variableAttributePosition)
 	{
-		length += strlen(originalData[var])+1;
+		length += strlen(originalData[var]) + 5;
 	}
 	record = new byte[length];
 	//处理定长数据
@@ -105,7 +105,7 @@ byte* Table::formRecord(std::vector<byte* > &originalData,int& length)
 		memcpy(record + 2 * i, &startPoint, sizeof(ushort));
 		memcpy(record + 2 * i + 2, &vLength, sizeof(ushort));
 		memcpy(record + startPoint, originalData[variableAttributePosition[i]], vLength);
-		startPoint += strlen(originalData[variableAttributePosition[i]]);
+		startPoint += strlen(originalData[variableAttributePosition[i]]) + 1;
 	}
 	return record;
 }

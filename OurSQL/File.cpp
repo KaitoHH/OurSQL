@@ -11,6 +11,11 @@ File::File(const char* filename) :fileName(filename)
 	fread(&lastFreeBlock, UINT_SIZE, 1, filePt);
 	fread(&dataBlockCount, UINT_SIZE, 1, filePt);
 	fread(&totalBlockCount, UINT_SIZE, 1, filePt);
+	int bno = firstDataBlock;
+	while (bno) {
+		hasFreeBlock.push_back(bno);
+		bno = readBlock(bno)->getNextBlockOffset();
+	}
 }
 
 
