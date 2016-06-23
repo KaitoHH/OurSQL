@@ -37,7 +37,7 @@ public:
 	bool readStructure(std::vector<Column> _tableStructure);
 	void showTableStructure();
 	byte* parseRecord(byte* record,ushort index);
-	byte* formRecord(std::vector<byte*>);
+	byte* formRecord(std::vector<byte*>&);
 
 	//ushort getLength();
 

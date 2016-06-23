@@ -89,11 +89,11 @@ void Table::showTableStructure()
 }
 
 /*将数据组织成record的格式，并返回指针*/
-byte* Table::formRecord(std::vector<byte* > originalData)
+byte* Table::formRecord(std::vector<byte* > &originalData)
 {
 	byte* record;
 	//数据存放起始点
-	ushort startPoint = variableAttributePosition.size() * 2;
+	ushort startPoint = variableAttributePosition.size() * 4;
 	ushort length = fixedLength;
 	for each (ushort var in variableAttributePosition)
 	{
@@ -107,13 +107,15 @@ byte* Table::formRecord(std::vector<byte* > originalData)
 			continue;
 		memcpy(record + startPoint, originalData[i], tableStructure[i]->get_dataLength());
 		startPoint += tableStructure[i]->get_dataLength();
+		int a1=*(int*)(originalData[i]);
 	}
 	//处理变长数据
 	for (int i = 0; i < variableAttributePosition.size(); i++)
 	{
-		memcpy(record + 2 * i, originalData[variableAttributePosition[i]], startPoint);
-		memcpy(record + 2 * i + 2, originalData[variableAttributePosition[i]], strlen(originalData[variableAttributePosition[i]]));
-		memcpy(record + startPoint, originalData[variableAttributePosition[i]], strlen(originalData[variableAttributePosition[i]]));
+		ushort vLength = strlen(originalData[variableAttributePosition[i]])+1;
+		memcpy(record + 2 * i, &startPoint, sizeof(ushort));
+		memcpy(record + 2 * i + 2, &vLength, sizeof(ushort));
+		memcpy(record + startPoint, originalData[variableAttributePosition[i]], vLength);
 		startPoint += strlen(originalData[variableAttributePosition[i]]);
 	}
 	return record;
@@ -123,6 +125,7 @@ byte* Table::parseRecord(byte* record, ushort index)
 {
 	byte* data;
 	ushort position;
+	index -= 1;
 	int preVariableNumber = 0;
 	for each (ushort var in variableAttributePosition)
 	{
@@ -139,6 +142,7 @@ byte* Table::parseRecord(byte* record, ushort index)
 	}
 	else
 	{
+		data = new byte[tableStructure[index]->get_dataLength()];
 		position = 4 * variableAttributePosition.size();
 		for (int i = 0; i < index; i++)
 		{

@@ -38,11 +38,11 @@ char * _commandNameList[]
 	"print",
 	"createtable",
 	"showtable",
-	"createRecord",
-	"showRecord"
+	"createrecord",
+	"showrecord"
 };
 
-int _commandList_length = 13;
+int _commandList_length = 15;
 
 
 void notFindException(char *cmd, void *par)
@@ -173,7 +173,24 @@ void showTableStructure(char *cmd, void *par)
 
 void createRecord(char *cmd, void *par)
 {
-	
+	char table[100];
+	int id;
+	int age;
+	char name[100];
+	sscanf((char*)par, "%d %d %s", &id, &age, name);
+	Table t("stu");
+	std::vector<byte*> originalData;
+	originalData.push_back((byte*)&id);
+	originalData.push_back((byte*)&age);
+	originalData.push_back((byte*)&name);
+	byte* record;
+	byte* b = originalData[0];
+	int a=*(int*)(b);
+	record=t.formRecord(originalData);
+	id = *(int*)t.parseRecord(record, 2);
+	char* s = (char*)t.parseRecord(record,3);
+	printf("%d\n", id);
+	printf("%s\n", s);
 }
 
 void showRecord(char *cmd, void *par)
