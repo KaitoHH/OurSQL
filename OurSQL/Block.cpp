@@ -24,28 +24,28 @@ uint Block::getBlockNum()
 	return blockNum;
 }
 
-bool Block::canAddRecord(Table *r)
+bool Block::canAddRecord(byte* data, ushort length)
 {
-//	ushort top = UINT_SIZE + 2 * USHORT_SIZE + 2 * USHORT_SIZE * getRecordCount();
-//	return (top + 2 * USHORT_SIZE <= getFree() - r->getLength());
+	ushort top = UINT_SIZE + 2 * USHORT_SIZE + 2 * USHORT_SIZE * getRecordCount();
+	return (top + 2 * USHORT_SIZE <= getFree() - length);
 	return true;
 }
 
-bool Block::addRecord(Table *r)
+bool Block::addRecord(byte* data, ushort length)
 {
-	if (!canAddRecord(r))	return false;
+	if (!canAddRecord(data, length))	return false;
 	modify();
 	// 更新head部分的length
-//	setRecordLength(getRecordCount()) = r->getLength();
+	setRecordLength(getRecordCount()) = length;
 	// 分配空闲空间
-//	ushort pos = getFree() - r->getLength();
+	ushort pos = getFree() - length;
 	// 更新指针
-//	setRecordPointer(getRecordCount()) = pos;
-//	byte *p = head + pos;
+	setRecordPointer(getRecordCount()) = pos;
+	byte *p = head + pos;
 	// 拷贝数据
-//	strncpy(p, r->getData(), r->getLength());
+	strncpy(p, data, length);
 	// 更新Free指针
-//	setFree() -= r->getLength();
+	setFree() -= length;
 	setRecordCount()++;
 	return true;
 }

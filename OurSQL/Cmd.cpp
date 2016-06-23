@@ -29,8 +29,14 @@ bool Cmd::waitForCommand()
 	void(*ptr)(char*, void*);
 	ptr = get_entry(cmd);
 
-	// 执行函数
-	(*ptr)(cmd, par);
+	try {
+		// 执行函数
+		(*ptr)(cmd, par);
+	}
+	catch (char *errorMsg) {
+		cout << "执行 " << cmd << " 时发生了错误:" << std::endl;
+		cout << errorMsg << std::endl;
+	}
 
 	return !cin.fail();
 }
@@ -56,7 +62,7 @@ void Cmd::parse_command(const char* s, char*& cmd, void*& par)
 
 void(*Cmd::get_entry(char* cmd))(char*, void*)
 {
-	for (int i = 1; i <= _commandList_length; i++) {
+	for (int i = 1; i < _commandList_length; i++) {
 		if (!strcmp(_commandNameList[i], cmd))
 			return _commandFunctionList[i];
 	}

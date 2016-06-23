@@ -49,41 +49,30 @@ bool  Table::structTable(std::vector<Column> tableStructure, FILE *fileName)
 	fseek(fileName, C_SIZE, 0);
 	for (int i = 0; i < size; i++)
 	{
-		byte type = tableStructure[i].get_dataType();
-		ushort length = tableStructure[i].get_dataLength();
-		/*if (tableStructure[i].get_dataType() == 'v')
+		byte type = tableStructure[i].getDataType();
+		ushort length = tableStructure[i].getDataLength();
+		/*if (tableStructure[i].getDataType() == 'v')
 			variableAttributePosition.push_back(i);
 			else
 			fixedLength += length;*/
-		//char name[61];-
-		//strcpy(name, tableStructure[i].get_dataName());
+			//char name[61];-
+			//strcpy(name, tableStructure[i].getDataName());
 		fwrite(&type, TYPE_SIZE, 1, fileName);
 		fwrite(&length, LENGTH_SIZE, 1, fileName);
 		//fwrite(name, sizeof(name), 1, fileName);
-		fwrite(tableStructure[i].get_dataName(), NAME_SIZE, 1, fileName);
+		fwrite(tableStructure[i].getDataName(), NAME_SIZE, 1, fileName);
 		//fseek(fileName, C_SIZE*(i + 1), 0);
 	}
 	return true;
 }
 
-//bool Table::readStructure(std::vector<Column> _tableStructure)
-//{
-//	
-//	_tableStructure = tableStructure;
-//	return true;
-//}
-
 void Table::showTableStructure()
 {
-	/*std::vector<Column> t;
-	readStructure(t);
-	int n = t.size();*/
-	//char* s = t[0].get_dataName();
+	printf("%8s|%8s|%8s\n", "Type", "Length", "Name");
 	for (int i = 0; i < tableStructure.size(); i++)
 	{
-		printf("Type:%c   LENGTH:%hu   Name:%s\n", tableStructure[i]->get_dataType(),
-			tableStructure[i]->get_dataLength(), tableStructure[i]->get_dataName());
-		//printf("%s",t[i].get_dataName());
+		printf("%8s|%8hu|%8s\n", tableStructure[i]->getTypeName(),
+			tableStructure[i]->getDataLength(), tableStructure[i]->getDataName());
 	}
 
 }
@@ -103,22 +92,32 @@ byte* Table::formRecord(std::vector<byte* > &originalData)
 	//处理定长数据
 	for (int i = 0; i < tableStructure.size(); i++)
 	{
-		if (tableStructure[i]->get_dataType() == 'v')
+		if (!tableStructure[i]->isFixLength())
 			continue;
-		memcpy(record + startPoint, originalData[i], tableStructure[i]->get_dataLength());
-		startPoint += tableStructure[i]->get_dataLength();
-		int a1=*(int*)(originalData[i]);
+		memcpy(record + startPoint, originalData[i], tableStructure[i]->getDataLength());
+		startPoint += tableStructure[i]->getDataLength();
+		int a1 = *(int*)(originalData[i]);
 	}
 	//处理变长数据
 	for (int i = 0; i < variableAttributePosition.size(); i++)
 	{
-		ushort vLength = strlen(originalData[variableAttributePosition[i]])+1;
+		ushort vLength = strlen(originalData[variableAttributePosition[i]]) + 1;
 		memcpy(record + 2 * i, &startPoint, sizeof(ushort));
 		memcpy(record + 2 * i + 2, &vLength, sizeof(ushort));
 		memcpy(record + startPoint, originalData[variableAttributePosition[i]], vLength);
 		startPoint += strlen(originalData[variableAttributePosition[i]]);
 	}
 	return record;
+}
+
+byte * Table::getColumnData(ushort index)
+{
+	return tableStructure[index]->getData();
+}
+
+int Table::getColumnSize()
+{
+	return tableStructure.size();
 }
 
 byte* Table::parseRecord(byte* record, ushort index)
@@ -132,7 +131,7 @@ byte* Table::parseRecord(byte* record, ushort index)
 		if (var < index)
 			preVariableNumber++;
 	}
-	if (tableStructure[index]->get_dataType() == 'v')
+	if (!tableStructure[index]->isFixLength())
 	{
 		ushort length;
 		memcpy(&position, record + 2 * preVariableNumber, 2);
@@ -142,17 +141,17 @@ byte* Table::parseRecord(byte* record, ushort index)
 	}
 	else
 	{
-		data = new byte[tableStructure[index]->get_dataLength()];
+		data = new byte[tableStructure[index]->getDataLength()];
 		position = 4 * variableAttributePosition.size();
 		for (int i = 0; i < index; i++)
 		{
-			if (tableStructure[i]->get_dataType() == 'v')
+			if (!tableStructure[i]->isFixLength())
 			{
 				continue;
 			}
-			position += tableStructure[i]->get_dataLength();
+			position += tableStructure[i]->getDataLength();
 		}
-		memcpy(data, record + position, tableStructure[index]->get_dataLength());
+		memcpy(data, record + position, tableStructure[index]->getDataLength());
 	}
 	return data;
 }

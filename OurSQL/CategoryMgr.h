@@ -1,9 +1,9 @@
 #pragma once
 #include <cstdio>
 #include <string>
-#include <vector>
+#include <set>
 #include <map>
-
+#define CATGORY_NAME "OurSQL.cat"
 /*
 ourSQL.cat文件的结构
 第一行是一个整数n 表示一共有n个数据库
@@ -20,9 +20,14 @@ public:
 	~CategoryMgr();
 	bool addDataBase(std::string dbName);
 	bool addTable(std::string dbName, std::string tableName);
+	bool existDataBase(std::string dbName);
+	bool existTable(std::string dbName, std::string tableName);
 	bool removeDataBase(std::string dbName);
 	bool removeTable(std::string dbName, std::string tableName);
+	void showDatabase();
+	bool showTable(std::string dbName);
+	static std::string* makePath(const char*,const char*,const char*);
 private:
-	std::map<std::string, std::vector<std::string>>database;
+	std::map<std::string, std::set<std::string>>database;
 };
 

@@ -1,7 +1,7 @@
 #include "File.h"
 #include "BufferMgr.h"
 
-extern BufferMgr dataBaseBuffer;
+extern BufferMgr databaseBuffer;
 File::File(const char* filename) :fileName(filename)
 {
 	filePt = fopen(filename, "rb+");
@@ -58,7 +58,7 @@ Block* File::addNewBlock()
 
 void File::removeBlock(Block *block, uint front)
 {
-	dataBaseBuffer.addBlock(fileName, block);
+	databaseBuffer.addBlock(fileName, block);
 	if (front) {
 		setNextOffest(readBlock(front), block->getNextBlockOffset());
 	}
@@ -82,8 +82,8 @@ void File::removeBlock(Block *block, uint front)
 
 Block * File::readBlock(uint offest)
 {
-	// 先从dataBaseBuffer中找
-	Block *target = dataBaseBuffer.getBlock(fileName, offest);
+	// 先从databaseBuffer中找
+	Block *target = databaseBuffer.getBlock(fileName, offest);
 	if (target != nullptr) {
 		return target;
 	}
@@ -92,8 +92,8 @@ Block * File::readBlock(uint offest)
 	fread(_buffer, BLOCK_SIZE, 1, filePt);
 
 	target = new Block(offest, _buffer);
-	// 置入dataBaseBuffer
-	dataBaseBuffer.addBlock(fileName, target);
+	// 置入databaseBuffer
+	databaseBuffer.addBlock(fileName, target);
 	return target;
 }
 
@@ -123,7 +123,7 @@ const char * File::getFileName()
 void File::setNextOffest(Block * temp, uint offest)
 {
 	temp->setNext() = offest;
-	dataBaseBuffer.addBlock(fileName, temp);
+	databaseBuffer.addBlock(fileName, temp);
 	//writeToFile(temp);
 }
 

@@ -13,20 +13,29 @@ typedef unsigned short int ushort;
 ** data type为一个byte类型，data length为一个ushort类型
 ** data type中v表示varchar c表示char  i表示int   d表示double   f表示float
 */
+static const char conlumnType[] = { 0,'v','c','i','d','f' };
+static const int conlumnLen[] = { 0,-1,1,4,4,2 };
+static const char conlumnFormat[][5] = { "","%s","%c","%d","%lf","%f" };
+static const char conlumnForm[][10] = { "","varchar","char","int","double","float" };
+static const int typeCnt = 5;
 class Column
 {
 public:
 	Column();
 	Column(byte _dataType, ushort _dataLength, char* _dataName);
-	byte get_dataType() const;
-	ushort get_dataLength()const;
-	char* get_dataName()const;
+	byte getDataType() const;
+	ushort getDataLength()const;
+	char* getDataName()const;
+	const char* getTypeName()const;
+	bool isFixLength()const;
 	Column& operator=(const Column &p1);
+	static byte parseType(char _type, int &length);
+	byte* getData();
 private:
 	byte dataType;
 	ushort dataLength;
 	char* dataName;
-	
 	//Column operator=(const Column &p1);
 };
+
 

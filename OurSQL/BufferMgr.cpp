@@ -11,16 +11,7 @@ BufferMgr::BufferMgr()
 
 BufferMgr::~BufferMgr()
 {
-	printf("[Buffer Mgr]Now writing buffer back to files...\n");
-	// 写回文件
-	for (auto i = numMap.begin(); i != numMap.end(); i++) {
-		Block *b = block[i->second];
-		if (b->isModified()) {
-			File file(i->first.fileName);
-			file.writeToFile(b);
-			printf("[Buffer Mgr]Block #%d in %s\n", i->first.blockNum, i->first.fileName);
-		}
-	}
+	clear();
 }
 
 void BufferMgr::addBlock(const char *file, Block *b)
@@ -90,5 +81,19 @@ void BufferMgr::showBlock()
 	for (int i = 0; i < MAX_BLOCK_SIZE; i++) {
 		if (block[i] != nullptr)
 			printf("%3d|%3d\n", i, block[i]->getBlockNum());
+	}
+}
+
+void BufferMgr::clear()
+{
+	printf("[Buffer Mgr]Now writing buffer back to files...\n");
+	// 写回文件
+	for (auto i = numMap.begin(); i != numMap.end(); i++) {
+		Block *b = block[i->second];
+		if (b->isModified()) {
+			File file(i->first.fileName);
+			file.writeToFile(b);
+			printf("[Buffer Mgr]Block #%d in %s\n", i->first.blockNum, i->first.fileName);
+		}
 	}
 }

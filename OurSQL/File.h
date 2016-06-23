@@ -41,6 +41,7 @@ public:
 	void writeToFile(Block *);
 	void showFile();
 	const char* getFileName();
+
 private:
 	FILE *filePt;
 	uint firstDataBlock;

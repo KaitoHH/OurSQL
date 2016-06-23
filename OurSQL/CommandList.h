@@ -1,11 +1,13 @@
 #pragma once
 #include "BufferMgr.h"
+#include "CategoryMgr.h"
 #include "File.h"
 #include "Table.h"
 extern BufferMgr databaseBuffer;
+extern CategoryMgr databaseCategory;
+extern std::string curDatabase;
 void notFindException(char* cmd, void* par);
 
-void exitCommand(char* cmd, void *par);
 
 /* newblock filename
 ** 向filename添加一个新文件快
@@ -15,15 +17,7 @@ void newBlock(char*cmd, void *par);
 void showBuffer(char*cmd, void *par);
 
 // 暂不能使用
-void useBlock(char*cmd, void *par);
-
-// 暂不能使用
 void showBlock(char*cmd, void *par);
-
-/* addrecord filename blocknum record
-** 向filename的第blocknum块添加一条记录
-*/
-void addRecord(char*cmd, void *par);
 
 /* addrecord filename blocknum recordnum
 ** 向filename的第blocknum块删除第recordnum条记录
@@ -45,8 +39,6 @@ void showFile(char *cmd, void *par);
 */
 void removeBlock(char *cmd, void *par);
 
-void print(char *cmd, void *par);
-
 /*创建一个table*/
 void createTable(char *cmd, void *par);
 
@@ -56,5 +48,18 @@ void showTableStructure(char *cmd, void *par);
 /*创建record*/
 void createRecord(char *cmd, void *par);
 
-/*输出record*/
-void showRecord(char *cmd, void *par);
+void createDatabase(char *cmd, void *par);
+
+void removeDatabase(char *cmd, void *par);
+
+void showDatabase(char*cmd, void *par);
+
+void leaveDatabase(char *cmd, void *par);
+
+void enterDatabase(char *cmd, void *par);
+
+void removeTable(char *cmd, void *par);
+
+void showAllTable(char *cmd, void *par);
+
+void insertRecord(char *cmd, void *par);

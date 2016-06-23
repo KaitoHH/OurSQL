@@ -15,7 +15,7 @@ public:
 	void removeBlock(uint);
 	Block* getBlock(const char*, uint);
 	int getAndReleaseLruBlock();
-
+	void clear();
 	void showBlock();
 private:
 	Block *block[MAX_BLOCK_SIZE];

@@ -1,8 +1,9 @@
 #include "Cmd.h"
 #include "BufferMgr.h"
-
-BufferMgr dataBaseBuffer;
-
+#include "CategoryMgr.h"
+BufferMgr databaseBuffer;
+CategoryMgr databaseCategory;
+std::string curDatabase;
 int main()
 {
 	Cmd cmd = Cmd();
