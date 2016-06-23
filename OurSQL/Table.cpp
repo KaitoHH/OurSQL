@@ -159,6 +159,17 @@ byte* Table::parseRecord(byte* record, ushort index)
 bool Table::compareRecord(byte* record, byte* conditionData, int dataPostion, CONDITION condition)
 {
 	byte* recordData = parseRecord(record, dataPostion);
+	/*switch (tableStructure[dataPostion]->getDataType())
+	{
+	case 1:switch (condition)
+	{
+	case GREAT:if ()
+	default:
+		break;
+	}
+	default:
+		break;
+	}*/
 	return true;
 
 }
@@ -168,21 +179,21 @@ void Table::printTitle()
 	//printf("%8s", tableStructure[0]->getDataName());
 	for (int i = 0; i < tableStructure.size(); i++)
 	{
-		printf("|%8s", tableStructure[i]->getDataName());
+		printf("%8s|", tableStructure[i]->getDataName());
 	}
 }
 
 void Table::printRecord(byte* record)
 {
-	for (int i = 0; i < tableStructure.size(); i++)
+	for (int i = 1; i <= tableStructure.size(); i++)
 	{
-		switch (tableStructure[i]->getDataType())
+		switch (tableStructure[i-1]->getDataType())
 		{
-		case 1:printf("|%8s", parseRecord(record, i)); break;
-		case 2:printf("|%8c", *parseRecord(record, i)); break;
-		case 3:printf("|%8d", *(int*)parseRecord(record, i)); break;
-		case 4:printf("|%8lf", *(double*)parseRecord(record, i)); break;
-		case 5:printf("|%8s", *(float*)parseRecord(record, i)); break;
+		case 1:printf("%8s|", parseRecord(record, i)); break;
+		case 2:printf("%8c|", *parseRecord(record, i)); break;
+		case 3:printf("%8d|", *(int*)parseRecord(record, i)); break;
+		case 4:printf("%8lf|", *(double*)parseRecord(record, i)); break;
+		case 5:printf("%8s|", *(float*)parseRecord(record, i)); break;
 		default:
 			break;
 		}
