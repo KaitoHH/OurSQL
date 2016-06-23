@@ -26,6 +26,13 @@ typedef unsigned short int ushort;
 ** data type为一个byte类型，data length为一个ushort类型
 ** 由于一块大小4K，为了使块中能够至少一个记录能因此data length的和不能超过4k(4084 bytes)
 ** 有关Block的组织结构，见"Block.h"
+**
+** Record的结构
+** -------------------------------------------------------------------------------------------------------------------------------
+** |Variable-Data 1 pointer|Variable-Data 1 length|VarData 2 pt|VarData 2 len|...|FixData 1|FixData 2|...|VarData 1|VarData 2|...|
+** -------------------------------------------------------------------------------------------------------------------------------
+** 一个可变长度的数据指针占2字节,长度占2字节
+** 指针是record内的偏移量
 */
 class Table
 {

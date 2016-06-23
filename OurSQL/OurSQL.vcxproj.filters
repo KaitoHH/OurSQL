@@ -39,10 +39,10 @@
     <ClCompile Include="Column.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="bufferId.cpp">
+    <ClCompile Include="CategoryMgr.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="CategoryMgr.cpp">
+    <ClCompile Include="BufferId.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -68,10 +68,10 @@
     <ClInclude Include="Column.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="bufferId.h">
+    <ClInclude Include="CategoryMgr.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="CategoryMgr.h">
+    <ClInclude Include="BufferId.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

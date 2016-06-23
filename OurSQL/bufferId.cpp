@@ -1,6 +1,6 @@
-#include "bufferId.h"
+#include "BufferId.h"
 
-bool operator<(const bufferId & id1, const bufferId & id2)
+bool operator<(const BufferId & id1, const BufferId & id2)
 {
 
 	int comp = strcmp(id1.fileName, id2.fileName);
@@ -13,7 +13,7 @@ bool operator<(const bufferId & id1, const bufferId & id2)
 
 }
 
-bufferId::~bufferId()
+BufferId::~BufferId()
 {
 	delete[] fileName;
 }

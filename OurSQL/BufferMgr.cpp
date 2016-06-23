@@ -17,7 +17,7 @@ BufferMgr::~BufferMgr()
 
 void BufferMgr::addBlock(const char *file, Block *b)
 {
-	if (numMap.find(bufferId(file, b->getBlockNum())) != numMap.end())
+	if (numMap.find(BufferId(file, b->getBlockNum())) != numMap.end())
 		return;
 	int nextBlock;
 	if (curSize < MAX_BLOCK_SIZE) {
@@ -28,7 +28,7 @@ void BufferMgr::addBlock(const char *file, Block *b)
 		nextBlock = getAndReleaseLruBlock();
 		removeBlock(nextBlock);
 	}
-	bufferId *bid = new bufferId(file, b->getBlockNum());
+	BufferId *bid = new BufferId(file, b->getBlockNum());
 	block[nextBlock] = b;
 	blockInfo[nextBlock] = bid;
 	numMap[*bid] = nextBlock;
@@ -58,7 +58,7 @@ void BufferMgr::removeBlock(uint bno)
 
 Block * BufferMgr::getBlock(const char* file, uint BlockNum)
 {
-	bufferId id = bufferId(file, BlockNum);
+	BufferId id = BufferId(file, BlockNum);
 	if (numMap.find(id) == numMap.end())
 		return nullptr;
 	int retBlock = numMap[id];

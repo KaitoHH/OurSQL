@@ -51,12 +51,6 @@ bool  Table::structTable(std::vector<Column> tableStructure, FILE *fileName)
 	{
 		byte type = tableStructure[i].getDataType();
 		ushort length = tableStructure[i].getDataLength();
-		/*if (tableStructure[i].getDataType() == 'v')
-			variableAttributePosition.push_back(i);
-			else
-			fixedLength += length;*/
-			//char name[61];-
-			//strcpy(name, tableStructure[i].getDataName());
 		fwrite(&type, TYPE_SIZE, 1, fileName);
 		fwrite(&length, LENGTH_SIZE, 1, fileName);
 		//fwrite(name, sizeof(name), 1, fileName);

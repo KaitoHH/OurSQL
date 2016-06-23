@@ -3,7 +3,7 @@
 #include <map>
 #include <list>
 #include "Block.h"
-#include "bufferId.h"
+#include "BufferId.h"
 #define MAX_BLOCK_SIZE 4
 
 class BufferMgr
@@ -20,11 +20,11 @@ public:
 	bool switchLog();
 private:
 	Block *block[MAX_BLOCK_SIZE];
-	bufferId *blockInfo[MAX_BLOCK_SIZE];
+	BufferId *blockInfo[MAX_BLOCK_SIZE];
 	int curSize;
 	bool logRecord;
 	// 块号与BufferMgr内部序号的对应关系
-	std::map<bufferId, int>numMap;
+	std::map<BufferId, int>numMap;
 
 	// LRU列表
 	std::list<int>leastList;

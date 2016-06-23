@@ -1,16 +1,16 @@
 #pragma once
 #include "File.h"
 
-struct bufferId
+struct BufferId
 {
 	char *fileName;
 	uint blockNum;
-	bufferId(const char *f, uint bno) : blockNum(bno)
+	BufferId(const char *f, uint bno) : blockNum(bno)
 	{
 		fileName = new char[strlen(f) + 1];
 		strcpy(fileName, f);
 	}
-	~bufferId();
+	~BufferId();
 };
 
-bool operator < (const bufferId &id1, const bufferId &id2);
+bool operator < (const BufferId &id1, const BufferId &id2);
